@@ -5,7 +5,7 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://cmateosjimenez.github.io/cristianPortfolio2026",
+      url: "https://crismatji.github.io/cristianPortfolio2026",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,

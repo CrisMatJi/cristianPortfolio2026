@@ -27,12 +27,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Cristian Mateos" }],
   creator: "Cristian Mateos",
-  metadataBase: new URL("https://cmateosjimenez.github.io/cristianPortfolio2026"),
+  metadataBase: new URL("https://crismatji.github.io/cristianPortfolio2026"),
   openGraph: {
     type: "website",
     locale: "es_ES",
     alternateLocale: "en_US",
-    url: "https://cmateosjimenez.github.io/cristianPortfolio2026",
+    url: "https://crismatji.github.io/cristianPortfolio2026",
     title: "Cristian Mateos — Full-Stack Developer Freelance",
     description:
       "Full-stack developer con más de 12 años. Software a medida, landing pages, automatizaciones IA. Freelance disponible.",
