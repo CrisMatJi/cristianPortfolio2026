@@ -11,7 +11,7 @@ interface StackProps {
 
 export function Stack({ t, ac }: StackProps) {
   return (
-    <section id="stack" style={{ padding: "120px 48px", background: "#0e0e12" }}>
+    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "#161410" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div className="reveal" style={{ marginBottom: 64 }}>
           <SectionTag ac={ac}>{t.stack.tag}</SectionTag>
@@ -31,6 +31,7 @@ export function Stack({ t, ac }: StackProps) {
 
         {/* Process steps */}
         <div
+          className="stack-process"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr auto 1fr auto 1fr auto 1fr auto 1fr",
@@ -87,6 +88,7 @@ export function Stack({ t, ac }: StackProps) {
 
               {i < t.stack.steps.length - 1 && (
                 <div
+                  className="stack-connector"
                   style={{
                     display: "flex",
                     alignItems: "center",

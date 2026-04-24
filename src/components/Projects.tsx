@@ -23,7 +23,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
   const [hov, setHov] = useState(false);
   return (
     <div
-      className="reveal card"
+      className="reveal card proj-card"
       style={{
         borderRadius: 24,
         overflow: "hidden",
@@ -31,16 +31,16 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
         gridTemplateColumns: "1fr 1fr",
         gap: 0,
         minHeight: 320,
-        border: `1px solid ${hov ? p.hue + "40" : "#1e1e26"}`,
+        border: `1px solid ${hov ? p.hue + "40" : "#2c2618"}`,
         transition: "border-color .3s, transform .35s cubic-bezier(.16,1,.3,1)",
         transform: hov ? "translateY(-5px)" : "none",
-        background: "#141418",
+        background: "#231d12",
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
     >
       {/* Visual */}
-      <div style={{ position: "relative", overflow: "hidden" }}>
+      <div className="proj-visual" style={{ position: "relative", overflow: "hidden" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={PROJECT_IMAGES[idx].src}
@@ -165,7 +165,7 @@ interface ProjectsProps {
 
 export function Projects({ t, ac }: ProjectsProps) {
   return (
-    <section id="work" style={{ padding: "120px 48px", background: "#0e0e12" }}>
+    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "#161410" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div
           className="reveal"

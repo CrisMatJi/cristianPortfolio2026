@@ -15,9 +15,10 @@ interface AboutProps {
 
 export function About({ t, ac }: AboutProps) {
   return (
-    <section id="about" style={{ padding: "120px 48px" }}>
+    <section id="about" className="resp-section" style={{ padding: "120px 48px" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div
+          className="about-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1.1fr 1fr",
@@ -115,7 +116,7 @@ export function About({ t, ac }: AboutProps) {
           </div>
 
           {/* Right — info cards */}
-          <div className="reveal d2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="reveal d2 about-cards" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {t.about.cards.map((c, i) => (
               <div
                 key={i}

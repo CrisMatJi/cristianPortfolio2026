@@ -9,8 +9,9 @@ interface FooterProps {
 
 export function Footer({ t, ac }: FooterProps) {
   return (
-    <footer style={{ background: "#0c0c10", borderTop: "1px solid #1a1a22", padding: "24px 48px" }}>
+    <footer style={{ background: "#1a1710", borderTop: "1px solid #2c2618", padding: "24px 48px" }}>
       <div
+        className="footer-row"
         style={{
           display: "flex",
           justifyContent: "space-between",

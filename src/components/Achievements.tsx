@@ -10,6 +10,7 @@ interface AchievementsProps {
 export function Achievements({ t, ac }: AchievementsProps) {
   return (
     <section
+      className="resp-section"
       style={{
         padding: "80px 48px",
         position: "relative",
@@ -22,7 +23,7 @@ export function Achievements({ t, ac }: AchievementsProps) {
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(120deg, #0c0c10 0%, ${ac}12 40%, ${ac}1a 60%, #0c0c10 100%)`,
+          background: `linear-gradient(120deg, #1a1710 0%, ${ac}12 40%, ${ac}1a 60%, #1a1710 100%)`,
           zIndex: 0,
           pointerEvents: "none",
         }}
@@ -41,6 +42,7 @@ export function Achievements({ t, ac }: AchievementsProps) {
         }}
       />
       <div
+        className="achievements-grid"
         style={{
           maxWidth: 1140,
           margin: "0 auto",

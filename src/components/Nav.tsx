@@ -40,6 +40,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
 
   const topNav = (
     <nav
+      className="top-nav"
       style={{
         position: "fixed",
         top: 0,
@@ -59,7 +60,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
       <a href="#" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-.02em", color: "#fff" }}>
         CM<span style={{ color: ac }}>.</span>
       </a>
-      <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+      <div className="nav-top-links" style={{ display: "flex", gap: 28, alignItems: "center" }}>
         {(["work", "services", "about", "stack"] as const).map((k) => (
           <a
             key={k}
@@ -130,12 +131,12 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
         display: "flex",
         alignItems: "center",
         gap: 0,
-        background: "rgba(14,14,18,0.90)",
+        background: "rgba(22,20,14,0.92)",
         backdropFilter: "blur(24px) saturate(180%)",
         border: "1px solid #252530",
         borderRadius: 100,
         padding: "6px 6px 6px 20px",
-        boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 0.5px #1e1e26 inset",
+        boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 0.5px #2c2618 inset",
         whiteSpace: "nowrap",
         transition:
           "opacity .4s cubic-bezier(.16,1,.3,1), transform .4s cubic-bezier(.16,1,.3,1)",

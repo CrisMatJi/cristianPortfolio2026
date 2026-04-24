@@ -15,6 +15,7 @@ interface HeroProps {
 export function Hero({ t, ac }: HeroProps) {
   return (
     <section
+      className="resp-section"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -54,6 +55,7 @@ export function Hero({ t, ac }: HeroProps) {
       />
 
       <div
+        className="hero-grid"
         style={{
           maxWidth: 1140,
           margin: "0 auto",
@@ -186,6 +188,7 @@ export function Hero({ t, ac }: HeroProps) {
 
         {/* Right — avatar card */}
         <div
+          className="mob-hide"
           style={{
             animation: "fadeUp .8s .3s ease both",
             display: "flex",
@@ -305,7 +308,7 @@ export function Hero({ t, ac }: HeroProps) {
           overflow: "hidden",
           borderTop: "1px solid #1a1a22",
           padding: "14px 0",
-          background: "#0e0e12",
+          background: "#161410",
         }}
       >
         <div className="strip-track">

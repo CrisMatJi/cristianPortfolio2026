@@ -10,7 +10,7 @@ interface ServicesProps {
 
 export function Services({ t, ac }: ServicesProps) {
   return (
-    <section id="services" style={{ padding: "120px 48px" }}>
+    <section id="services" className="resp-section" style={{ padding: "120px 48px" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div className="reveal" style={{ marginBottom: 56 }}>
           <SectionTag ac={ac}>{t.nav.services}</SectionTag>
@@ -25,7 +25,7 @@ export function Services({ t, ac }: ServicesProps) {
             {t.services.h}
           </h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+        <div className="services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
           {t.services.items.map((s, i) => (
             <div
               key={i}

@@ -45,7 +45,7 @@ export function Contact({ t, ac }: ContactProps) {
   const calUrl = `${CALENDLY}?embed=true&theme=dark&layout=week_view&hideEventTypeDetails=true`;
 
   return (
-    <section id="contact" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
+    <section id="contact" className="resp-section" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
       {/* Giant name watermark */}
       <div
         style={{
@@ -97,11 +97,12 @@ export function Contact({ t, ac }: ContactProps) {
         {/* Tab switcher — centered */}
         <div className="reveal d2" style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
           <div
+            className="tab-switcher"
             style={{
               display: "inline-flex",
               gap: 4,
-              background: "#141418",
-              border: "1px solid #1e1e26",
+              background: "#231d12",
+              border: "1px solid #2c2618",
               borderRadius: 10,
               padding: 3,
             }}
@@ -135,13 +136,14 @@ export function Contact({ t, ac }: ContactProps) {
             style={{
               borderRadius: 16,
               overflow: "hidden",
-              border: "1px solid #1e1e26",
-              background: "#141418",
+              border: "1px solid #2c2618",
+              background: "#231d12",
               animation: "fadeUp 0.5s ease both",
             }}
           >
             <iframe
               src={calUrl}
+              className="cal-iframe"
               style={{
                 width: "100%",
                 height: 480,
