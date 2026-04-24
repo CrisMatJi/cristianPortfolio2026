@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cristian Mateos — Full-Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0c0c10; color: #e2e2e8; font-family: 'Outfit', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none; }
+    a, button { cursor: none; }
+    ::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-track { background: #0c0c10; } ::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 2px; }
+    a { color: inherit; text-decoration: none; }
+    button { border: none; background: none; font-family: inherit; }
+
+    /* Cursor */
+    #c1 { position:fixed;width:10px;height:10px;background:var(--ac,#b4f066);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .15s,height .15s; }
+    #c2 { position:fixed;width:38px;height:38px;border:1.5px solid var(--ac,#b4f066);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.25;transition:width .2s,height .2s,opacity .2s; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none} }
+    @keyframes slide-x { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+    @keyframes pulse-ac { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)} }
+    @keyframes glow { 0%,100%{opacity:.06}50%{opacity:.12} }
+    @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
+    @keyframes spin { from{transform:rotate(0)}to{transform:rotate(360deg)} }
+
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:none}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+    /* Cards */
+    .card { background:#141418;border:1px solid #1e1e26;border-radius:20px;transition:border-color .3s,transform .3s cubic-bezier(.16,1,.3,1); }
+    .card:hover { border-color:#2e2e3e;transform:translateY(-4px); }
+
+    /* Scrolling strip */
+    .strip-track { display:flex;width:max-content;animation:slide-x 30s linear infinite; }
+    .strip-track:hover { animation-play-state:paused; }
+
+    /* Input */
+    .inp { width:100%;background:#1a1a22;border:1.5px solid #252530;border-radius:12px;padding:14px 18px;font-size:14px;font-family:'Outfit',sans-serif;color:#e2e2e8;outline:none;transition:border-color .2s; }
+    .inp:focus { border-color:var(--ac,#b4f066); }
+    .inp::placeholder { color:#44444e; }
+  </style>
+</head>
+<body>
+<div id="c1"></div><div id="c2"></div>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const CALENDLY = 'https://calendly.com/c-mateos-jimenez/30min';
+const FORMSPREE = 'https://formspree.io/f/xdaybdbz';
+const EMAIL = 'c.mateos.jimenez@gmail.com';
+const LINKEDIN = 'https://www.linkedin.com/in/cmateosjimenez88/';
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentC": "#e8c96d",
+  "showAvail": true
+}/*EDITMODE-END*/;
+
+// ── Cursor ──────────────────────────────────────────────────────────────────
+function startCursor() {
+  const d=document.getElementById('c1'),r=document.getElementById('c2');
+  if(!d||!r)return;
+  let mx=-99,my=-99,rx=-99,ry=-99;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  const t=()=>{ d.style.left=mx+'px';d.style.top=my+'px';rx+=(mx-rx)*.11;ry+=(my-ry)*.11;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(t); };
+  t();
+  document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{r.style.width='56px';r.style.height='56px';r.style.opacity='.5';d.style.opacity='0';});
+    el.addEventListener('mouseleave',()=>{r.style.width='38px';r.style.height='38px';r.style.opacity='.25';d.style.opacity='1';});
+  });
+}
+
+function useReveal() {
+  useEffect(()=>{
+    const els=document.querySelectorAll('.reveal');
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} }),{threshold:.1});
+    els.forEach(el=>obs.observe(el));
+    return()=>obs.disconnect();
+  });
+}
+
+// ── Translations ──────────────────────────────────────────────────────────────
+const T = {
+  es: {
+    nav:{ work:'Proyectos',services:'Servicios',about:'Sobre mí',stack:'Stack',cta:'Agendar llamada' },
+    hero:{
+      avail:'Disponible para proyectos',
+      hi:'Hola, soy Cristian.',
+      h1:'Desarrollo software\nque trabaja para ti.',
+      sub:'Full-stack developer con más de 12 años convirtiendo ideas complejas en productos digitales sólidos, seguros y con resultados reales.',
+      cta:'Agenda una llamada →',
+      cta2:'Ver proyectos',
+      pills:['Full-Stack Dev','Mobile & Android','IA & Automatización','API Builder','React Expert','UX Focused','Pixel Perfect'],
+      strip:['12+ Años de experiencia','3 Proyectos en producción','Full-Stack Developer','Mobile Apps','Automatización IA','Software a medida','Landing Pages','Freelance disponible'],
+    },
+    about:{
+      tag:'Sobre mí',
+      h:'No soy una agencia. Soy Cristian.',
+      p1:'Empecé en sistemas internos, aprendí que el software que falla cuesta dinero real. Hoy combino mi trabajo como desarrollador con proyectos freelance seleccionados — solo los que puedo hacer bien.',
+      p2:'Me comprometo con el resultado, no con el presupuesto. Comunico directamente, sin intermediarios ni comerciales.',
+      cards:[
+        { label:'Ubicación', val:'España' },
+        { label:'Código desde', val:'2012' },
+        { label:'Disponibilidad', val:'Freelance' },
+        { label:'Idiomas', val:'ES · EN' },
+      ],
+      badges:['Disponible ahora','Responde en < 24h','Sin agencia, código directo'],
+    },
+    projects:{
+      tag:'Proyectos',
+      h:'Trabajo real,\nresultados medibles.',
+      sub:'Cada proyecto resuelve un problema de negocio concreto.',
+      cta:'Visitar proyecto →',
+      items:[
+        { n:'01', name:'ACF Fernando Terremoto', cat:'Full-Stack · Reservas · Dashboard', year:'2024', desc:'Sistema completo de reserva de asientos para espectáculos flamencos. Web pública con motor de reservas en tiempo real y dashboard de administración con control de aforo.', quote:'"Pasamos de gestionar reservas en papel a tener todo automatizado. La web se paga sola."', url:'https://www.acffernandoterremoto.es', tags:['Next.js','Node.js','PostgreSQL','Dashboard admin'], hue:'#e74c3c' },
+        { n:'02', name:'Suárez Studio', cat:'Landing Page · Portfolio · Diseño', year:'2024', desc:'Landing page minimalista para estudio de diseño de interiorismo arquitectónico. Enfocada en transmitir lujo, captar nuevos clientes de alto valor y mostrar proyectos de forma visual.', quote:'"Clientes me dicen que encuentran mi web más profesional que la de estudios grandes."', url:'https://www.suarezstudio.es', tags:['Next.js','Framer Motion','CRO','SEO'], hue:'#d4a547' },
+        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Aplicación Android para organizar partidos de fútbol amateur. Gestión de jugadores, algoritmo de equilibrio automático de equipos y notificaciones push en tiempo real.', quote:'"Empezamos a usarla en el grupo y ya no queremos volver a los grupos de WhatsApp."', url:'https://play.google.com/store', tags:['React Native','Android','Algoritmos','Push Notifications'], hue:'#27ae60' },
+      ],
+    },
+    stack:{
+      tag:'Tech Stack',
+      h:'Las herramientas\ncon las que trabajo.',
+      cats:[
+        { label:'Frontend', items:[
+          { name:'React / Next.js', icon:'⚛' },{ name:'TypeScript', icon:'TS' },{ name:'Tailwind CSS', icon:'✦' },{ name:'Framer Motion', icon:'◈' },
+        ]},
+        { label:'Backend', items:[
+          { name:'Node.js', icon:'⬡' },{ name:'PostgreSQL', icon:'🗄' },{ name:'REST APIs', icon:'⟳' },{ name:'Express', icon:'⊡' },
+        ]},
+        { label:'Mobile', items:[
+          { name:'React Native', icon:'📱' },{ name:'Android', icon:'◉' },{ name:'Play Store', icon:'▶' },{ name:'Expo', icon:'✺' },
+        ]},
+        { label:'IA & Tools', items:[
+          { name:'n8n', icon:'⊛' },{ name:'OpenAI', icon:'◇' },{ name:'Make', icon:'⊕' },{ name:'Framer', icon:'▣' },
+        ]},
+      ],
+    },
+    achievements:{
+      items:[
+        { v:'12+', l:'Años de experiencia', sub:'Desde 2012 en producción' },
+        { v:'3', l:'Proyectos activos', sub:'En producción real' },
+        { v:'100%', l:'Compromiso', sub:'Directo y sin intermediarios' },
+        { v:'<24h', l:'Tiempo de respuesta', sub:'A cualquier consulta' },
+      ],
+    },
+    contact:{
+      tag:'Contacto',
+      h:'¿Hablamos de\ntu proyecto?',
+      sub:'Primera llamada gratuita y sin compromiso. Cuéntame qué necesitas y vemos si encajamos.',
+      cta:'Agendar llamada gratis →',
+      avail:'2 plazas disponibles este mes',
+      form:{ name:'Tu nombre *', email:'Tu email *', project:'Cuéntame tu proyecto *', send:'Enviar mensaje', ok:'¡Enviado! Te respondo en menos de 24h.', alt:'O escríbeme directamente' },
+    },
+    footer:{ copy:'© 2026 Cristian Mateos · Full-Stack Developer', callLabel:'Llamada', callCta:'Agendar llamada →' },
+  },
+  en: {
+    nav:{ work:'Projects',services:'Services',about:'About',stack:'Stack',cta:'Book a call' },
+    hero:{
+      avail:'Available for projects',
+      hi:"Hi, I'm Cristian.",
+      h1:'I build software\nthat works for you.',
+      sub:'Full-stack developer with 12+ years turning complex ideas into solid, secure digital products with real results.',
+      cta:'Book a call →',
+      cta2:'See projects',
+      pills:['Full-Stack Dev','Mobile & Android','AI & Automation','API Builder','React Expert','UX Focused','Pixel Perfect'],
+      strip:['12+ Years of experience','3 Projects in production','Full-Stack Developer','Mobile Apps','AI Automation','Custom Software','Landing Pages','Freelance available'],
+    },
+    about:{
+      tag:'About me',
+      h:"I'm not an agency. I'm Cristian.",
+      p1:"I started in internal systems, learned that failing software costs real money. Today I combine my developer job with selected freelance projects — only the ones I can do well.",
+      p2:'I commit to the outcome, not the budget. I communicate directly, no middlemen or account managers.',
+      cards:[
+        { label:'Location', val:'Spain' },
+        { label:'Coding since', val:'2012' },
+        { label:'Availability', val:'Freelance' },
+        { label:'Languages', val:'ES · EN' },
+      ],
+      badges:['Available now','Replies in < 24h','No agency, direct code'],
+    },
+    projects:{
+      tag:'Projects',
+      h:'Real work,\nmeasurable results.',
+      sub:'Every project solves a concrete business problem.',
+      cta:'Visit project →',
+      items:[
+        { n:'01', name:'ACF Fernando Terremoto', cat:'Full-Stack · Booking · Dashboard', year:'2024', desc:'Complete seat reservation system for flamenco shows. Public website with real-time booking engine and administration dashboard with capacity control.', quote:'"We went from paper reservations to everything automated. The website pays for itself."', url:'https://www.acffernandoterremoto.es', tags:['Next.js','Node.js','PostgreSQL','Admin dashboard'], hue:'#e74c3c' },
+        { n:'02', name:'Suárez Studio', cat:'Landing Page · Portfolio · Design', year:'2024', desc:'Minimalist landing page for an architectural interior design studio. Focused on conveying luxury, attracting high-value clients and showcasing projects visually.', quote:'"Clients tell me my website looks more professional than large studios."', url:'https://www.suarezstudio.es', tags:['Next.js','Framer Motion','CRO','SEO'], hue:'#d4a547' },
+        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Android app to organize amateur football matches. Player management, automatic team balancing algorithm, and real-time push notifications.', quote:'"We started using it in the group and now we never want to go back to WhatsApp groups."', url:'https://play.google.com/store', tags:['React Native','Android','Algorithms','Push Notifications'], hue:'#27ae60' },
+      ],
+    },
+    stack:{
+      tag:'Tech Stack',
+      h:'The tools\nI work with.',
+      cats:[
+        { label:'Frontend', items:[
+          { name:'React / Next.js', icon:'⚛' },{ name:'TypeScript', icon:'TS' },{ name:'Tailwind CSS', icon:'✦' },{ name:'Framer Motion', icon:'◈' },
+        ]},
+        { label:'Backend', items:[
+          { name:'Node.js', icon:'⬡' },{ name:'PostgreSQL', icon:'🗄' },{ name:'REST APIs', icon:'⟳' },{ name:'Express', icon:'⊡' },
+        ]},
+        { label:'Mobile', items:[
+          { name:'React Native', icon:'📱' },{ name:'Android', icon:'◉' },{ name:'Play Store', icon:'▶' },{ name:'Expo', icon:'✺' },
+        ]},
+        { label:'AI & Tools', items:[
+          { name:'n8n', icon:'⊛' },{ name:'OpenAI', icon:'◇' },{ name:'Make', icon:'⊕' },{ name:'Framer', icon:'▣' },
+        ]},
+      ],
+    },
+    achievements:{
+      items:[
+        { v:'12+', l:'Years of experience', sub:'In production since 2012' },
+        { v:'3', l:'Active projects', sub:'In real production' },
+        { v:'100%', l:'Committed', sub:'Direct, no middlemen' },
+        { v:'<24h', l:'Response time', sub:'To any query' },
+      ],
+    },
+    contact:{
+      tag:'Contact',
+      h:'Let\'s talk about\nyour project.',
+      sub:'First call free and commitment-free. Tell me what you need and we see if we fit.',
+      cta:'Book a free call →',
+      avail:'2 slots available this month',
+      form:{ name:'Your name *', email:'Your email *', project:'Tell me about your project *', send:'Send message', ok:'Sent! I\'ll reply within 24h.', alt:'Or write me directly' },
+    },
+    footer:{ copy:'© 2026 Cristian Mateos · Full-Stack Developer', callLabel:'Call me', callCta:'Book a call →' },
+  },
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function Dot({ ac }) {
+  return <span style={{ display:'inline-block',width:7,height:7,borderRadius:'50%',background:ac,animation:'pulse-ac 2.5s ease-in-out infinite',flexShrink:0 }}/>;
+}
+function Badge({ children, ac, filled }) {
+  return (
+    <span style={{ display:'inline-flex',alignItems:'center',gap:6,fontSize:12,fontWeight:500,padding:'6px 14px',borderRadius:100,whiteSpace:'nowrap',
+      background: filled ? ac : `${ac}12`,
+      color: filled ? '#0c0c10' : ac,
+      border: `1px solid ${ac}30`,
+    }}>{children}</span>
+  );
+}
+function SectionTag({ children, ac }) {
+  return (
+    <div style={{ display:'inline-flex',alignItems:'center',gap:8,marginBottom:20 }}>
+      <Dot ac={ac}/>
+      <span style={{ fontSize:11,fontWeight:600,letterSpacing:'.12em',textTransform:'uppercase',color:ac }}>{children}</span>
+    </div>
+  );
+}
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+function Nav({ t, lang, setLang, ac }) {
+  const [sc, setSc] = useState(false);
+  const [visible, setVisible] = useState(false);
+  useEffect(()=>{
+    const f=()=>{ const y=window.scrollY; setSc(y>80); };
+    window.addEventListener('scroll',f);
+    setTimeout(()=>setVisible(true), 300);
+    return()=>window.removeEventListener('scroll',f);
+  },[]);
+
+  const linkStyle = { fontSize:13, color: sc?'#888':'#777', transition:'color .2s', fontWeight:500, cursor:'none' };
+
+  // TOP nav (visible when not scrolled)
+  const topNav = (
+    <nav style={{ position:'fixed',top:0,left:0,right:0,zIndex:200,
+      padding:'20px 48px',display:'flex',alignItems:'center',justifyContent:'space-between',
+      opacity: sc ? 0 : 1, pointerEvents: sc ? 'none' : 'all',
+      background:'transparent', transition:'opacity .35s ease' }}>
+      <a href="#" style={{ fontSize:18,fontWeight:800,letterSpacing:'-.02em',color:'#fff' }}>CM<span style={{ color:ac }}>.</span></a>
+      <div style={{ display:'flex',gap:28,alignItems:'center' }}>
+        {['work','services','about','stack'].map(k=>(
+          <a key={k} href={`#${k}`} style={linkStyle} onMouseEnter={e=>e.currentTarget.style.color='#e2e2e8'} onMouseLeave={e=>e.currentTarget.style.color='#777'}>{t.nav[k]}</a>
+        ))}
+      </div>
+      <div style={{ display:'flex',gap:10,alignItems:'center' }}>
+        <button onClick={()=>setLang(l=>l==='es'?'en':'es')} style={{ fontSize:11,color:'#444',letterSpacing:'.1em',padding:'6px 12px',border:'1px solid #252530',borderRadius:100,transition:'all .2s' }}
+          onMouseEnter={e=>{e.currentTarget.style.color='#aaa';e.currentTarget.style.borderColor='#444';}} onMouseLeave={e=>{e.currentTarget.style.color='#444';e.currentTarget.style.borderColor='#252530';}}>
+          {lang==='es'?'EN':'ES'}
+        </button>
+        <a href={CALENDLY} target="_blank" style={{ fontSize:13,fontWeight:700,color:'#0c0c10',background:ac,padding:'10px 22px',borderRadius:100,transition:'opacity .2s',boxShadow:`0 0 20px ${ac}25` }}
+          onMouseEnter={e=>e.currentTarget.style.opacity='.88'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>{t.nav.cta}</a>
+      </div>
+    </nav>
+  );
+
+  // BOTTOM floating pill (visible when scrolled)
+  const bottomNav = (
+    <nav style={{ position:'fixed', bottom:24, left:'50%',
+      transform:`translateX(-50%) translateY(${sc ? 0 : 16}px)`,
+      opacity: sc ? 1 : 0, pointerEvents: sc ? 'all' : 'none',
+      zIndex:200, display:'flex', alignItems:'center', gap:0,
+      background:'rgba(14,14,18,0.90)', backdropFilter:'blur(24px) saturate(180%)',
+      border:'1px solid #252530', borderRadius:100,
+      padding:'6px 6px 6px 20px',
+      boxShadow:'0 8px 40px rgba(0,0,0,0.5), 0 0 0 0.5px #1e1e26 inset',
+      whiteSpace:'nowrap', transition:'opacity .4s cubic-bezier(.16,1,.3,1), transform .4s cubic-bezier(.16,1,.3,1)' }}>
+      <div style={{ display:'flex', gap:4, alignItems:'center', marginRight:8 }}>
+        {['work','services','about','stack'].map(k=>(
+          <a key={k} href={`#${k}`} style={{ fontSize:13,color:'#666',padding:'6px 8px',transition:'color .2s',fontWeight:500 }}
+            onMouseEnter={e=>e.currentTarget.style.color='#e2e2e8'} onMouseLeave={e=>e.currentTarget.style.color='#666'}>{t.nav[k]}</a>
+        ))}
+      </div>
+      <div style={{ width:1, height:20, background:'#252530', margin:'0 8px' }}/>
+      <button onClick={()=>setLang(l=>l==='es'?'en':'es')} style={{ fontSize:11,color:'#444',letterSpacing:'.1em',padding:'5px 10px',border:'1px solid #252530',borderRadius:100,transition:'all .2s',marginRight:8 }}
+        onMouseEnter={e=>{e.currentTarget.style.color='#aaa';e.currentTarget.style.borderColor='#444';}} onMouseLeave={e=>{e.currentTarget.style.color='#444';e.currentTarget.style.borderColor='#252530';}}>
+        {lang==='es'?'EN':'ES'}
+      </button>
+      <a href={CALENDLY} target="_blank"
+        style={{ background:ac,color:'#0c0c10',fontSize:13,fontWeight:700,padding:'9px 20px',borderRadius:100,transition:'opacity .2s,box-shadow .2s',boxShadow:`0 0 16px ${ac}30` }}
+        onMouseEnter={e=>{e.currentTarget.style.opacity='.88';e.currentTarget.style.boxShadow=`0 0 28px ${ac}55`;}} onMouseLeave={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.boxShadow=`0 0 16px ${ac}30`;}}>
+        {t.nav.cta} →
+      </a>
+    </nav>
+  );
+
+  return <>{topNav}{bottomNav}</>;
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+function Hero({ t, ac, showAvail }) {
+  return (
+    <section style={{ minHeight:'100vh',display:'flex',flexDirection:'column',justifyContent:'center',padding:'120px 48px 80px',position:'relative',overflow:'hidden' }}>
+      {/* ambient glow */}
+      <div style={{ position:'absolute',top:'10%',right:'8%',width:560,height:560,borderRadius:'50%',background:`radial-gradient(circle,${ac}0c,transparent 65%)`,pointerEvents:'none',animation:'glow 7s ease-in-out infinite' }}/>
+      <div style={{ position:'absolute',bottom:'5%',left:'3%',width:300,height:300,borderRadius:'50%',background:`radial-gradient(circle,${ac}07,transparent 65%)`,pointerEvents:'none',animation:'glow 10s ease-in-out infinite 3s' }}/>
+
+      <div style={{ maxWidth:1140,margin:'0 auto',width:'100%',display:'grid',gridTemplateColumns:'1fr auto',gap:64,alignItems:'center' }}>
+        {/* Left */}
+        <div>
+          {showAvail && (
+            <div style={{ display:'inline-flex',alignItems:'center',gap:8,background:`${ac}10`,border:`1px solid ${ac}25`,borderRadius:100,padding:'7px 16px',marginBottom:32,animation:'fadeUp .6s ease both' }}>
+              <Dot ac={ac}/><span style={{ fontSize:12,color:ac,fontWeight:500,letterSpacing:'.04em' }}>{t.hero.avail}</span>
+            </div>
+          )}
+          <p style={{ fontSize:15,color:'#555',marginBottom:14,fontWeight:500,animation:'fadeUp .6s .1s ease both' }}>{t.hero.hi}</p>
+          <h1 style={{ fontSize:'clamp(48px, 6.5vw, 92px)',fontWeight:800,lineHeight:1.02,letterSpacing:'-.04em',marginBottom:28,whiteSpace:'pre-line',animation:'fadeUp .7s .15s ease both' }}>
+            {t.hero.h1.split('\n')[0]}<br/>
+            <span style={{ color:ac }}>{t.hero.h1.split('\n')[1]}</span>
+          </h1>
+          <p style={{ fontSize:'clamp(15px,1.4vw,17px)',color:'#777',maxWidth:520,lineHeight:1.72,marginBottom:40,animation:'fadeUp .7s .25s ease both',textWrap:'pretty' }}>{t.hero.sub}</p>
+          <div style={{ display:'flex',gap:12,flexWrap:'wrap',animation:'fadeUp .7s .35s ease both',marginBottom:48 }}>
+            <a href={CALENDLY} target="_blank"
+              style={{ background:ac,color:'#0c0c10',fontWeight:700,fontSize:15,padding:'14px 30px',borderRadius:100,transition:'transform .25s,box-shadow .25s',boxShadow:`0 0 32px ${ac}30` }}
+              onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 8px 40px ${ac}55`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=`0 0 32px ${ac}30`;}}>
+              {t.hero.cta}
+            </a>
+            <a href="#work" style={{ fontSize:15,color:'#bbb',padding:'14px 30px',border:'1px solid #252530',borderRadius:100,transition:'all .2s' }}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor='#444';e.currentTarget.style.color='#fff';}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor='#252530';e.currentTarget.style.color='#bbb';}}>
+              {t.hero.cta2}
+            </a>
+          </div>
+          {/* Pills */}
+          <div style={{ display:'flex',flexWrap:'wrap',gap:8,animation:'fadeUp .7s .45s ease both' }}>
+            {t.hero.pills.map(p=><Badge key={p} ac={ac}>{p}</Badge>)}
+          </div>
+        </div>
+
+        {/* Right — avatar */}
+        <div style={{ animation:'fadeUp .8s .3s ease both',display:'flex',flexDirection:'column',alignItems:'center',gap:20 }}>
+          <div style={{ width:260,height:310,background:'#141418',border:'1px solid #1e1e26',borderRadius:24,position:'relative',overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center',animation:'float 5s ease-in-out infinite' }}>
+            <div style={{ position:'absolute',inset:0,background:`radial-gradient(circle at 40% 30%,${ac}10,transparent 60%)` }}/>
+            {/* Spinning ring */}
+            <div style={{ position:'absolute',width:180,height:180,border:`1px solid ${ac}15`,borderRadius:'50%',animation:'spin 20s linear infinite' }}>
+              <div style={{ position:'absolute',top:-4,left:'50%',width:8,height:8,background:ac,borderRadius:'50%',transform:'translateX(-50%)' }}/>
+            </div>
+            <span style={{ fontSize:80,fontWeight:800,color:'#1e1e26',letterSpacing:'-.04em',position:'relative',zIndex:1 }}>CM</span>
+            <div style={{ position:'absolute',bottom:0,left:0,right:0,padding:'16px 20px',background:'linear-gradient(to top,#141418,transparent)' }}>
+              <p style={{ fontSize:10,color:'#333',letterSpacing:'.1em',textAlign:'center' }}>FOTO · PRÓXIMAMENTE</p>
+            </div>
+            {/* Floating badge */}
+            <div style={{ position:'absolute',top:16,right:16,background:ac,borderRadius:12,padding:'8px 12px',fontWeight:700,fontSize:13,color:'#0c0c10' }}>12+</div>
+          </div>
+          {/* Mini info cards */}
+          <div style={{ display:'flex',gap:8 }}>
+            {[['España','📍'],['Freelance','⚡']].map(([l,i])=>(
+              <div key={l} className="card" style={{ padding:'10px 16px',borderRadius:12,display:'flex',alignItems:'center',gap:6 }}>
+                <span style={{ fontSize:14 }}>{i}</span>
+                <span style={{ fontSize:12,fontWeight:500,color:'#888' }}>{l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats strip */}
+      <div style={{ position:'absolute',bottom:0,left:0,right:0,overflow:'hidden',borderTop:'1px solid #1a1a22',padding:'14px 0',background:'#0e0e12' }}>
+        <div className="strip-track">
+          {[...t.hero.strip,...t.hero.strip].map((s,i)=>(
+            <span key={i} style={{ display:'inline-flex',alignItems:'center',gap:16,padding:'0 28px',fontSize:12,fontWeight:600,letterSpacing:'.06em',textTransform:'uppercase',whiteSpace:'nowrap',color:i%3===0?ac:'#2a2a35' }}>
+              {s} <span style={{ width:4,height:4,borderRadius:'50%',background:'#2a2a35',display:'inline-block' }}/>
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── About ─────────────────────────────────────────────────────────────────────
+function About({ t, ac }) {
+  return (
+    <section id="about" style={{ padding:'120px 48px' }}>
+      <div style={{ maxWidth:1140,margin:'0 auto' }}>
+        <div style={{ display:'grid',gridTemplateColumns:'1.1fr 1fr',gap:80,alignItems:'flex-start' }}>
+          {/* Left */}
+          <div className="reveal">
+            <SectionTag ac={ac}>{t.about.tag}</SectionTag>
+            <h2 style={{ fontSize:'clamp(32px,4.5vw,58px)',fontWeight:800,letterSpacing:'-.035em',lineHeight:1.1,marginBottom:28 }}>{t.about.h}</h2>
+            <p style={{ fontSize:16,color:'#777',lineHeight:1.78,marginBottom:16,textWrap:'pretty' }}>{t.about.p1}</p>
+            <p style={{ fontSize:16,color:'#777',lineHeight:1.78,marginBottom:36,textWrap:'pretty' }}>{t.about.p2}</p>
+            {/* Badges */}
+            <div style={{ display:'flex',flexWrap:'wrap',gap:8,marginBottom:40 }}>
+              {t.about.badges.map(b=>(
+                <span key={b} style={{ display:'inline-flex',alignItems:'center',gap:6,fontSize:12,fontWeight:500,color:'#888',background:'#141418',border:'1px solid #1e1e26',borderRadius:100,padding:'7px 14px' }}>
+                  <Dot ac={ac}/>{b}
+                </span>
+              ))}
+            </div>
+            <div style={{ display:'flex',gap:10 }}>
+              <a href={LINKEDIN} target="_blank" style={{ fontSize:13,color:'#666',border:'1px solid #1e1e26',borderRadius:100,padding:'10px 20px',transition:'all .2s',fontWeight:500 }}
+                onMouseEnter={e=>{e.currentTarget.style.color=ac;e.currentTarget.style.borderColor=ac;}} onMouseLeave={e=>{e.currentTarget.style.color='#666';e.currentTarget.style.borderColor='#1e1e26';}}>LinkedIn →</a>
+              <a href={CALENDLY} target="_blank" style={{ fontSize:13,color:'#0c0c10',background:ac,borderRadius:100,padding:'10px 20px',fontWeight:600,transition:'opacity .2s' }}
+                onMouseEnter={e=>e.currentTarget.style.opacity='.85'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>{t.nav.cta}</a>
+            </div>
+          </div>
+          {/* Right — info cards grid */}
+          <div className="reveal d2" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:12 }}>
+            {t.about.cards.map((c,i)=>(
+              <div key={i} className="card" style={{ padding:'24px 22px',borderRadius:18 }}>
+                <p style={{ fontSize:10,color:'#444',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:10,fontWeight:600 }}>{c.label}</p>
+                <p style={{ fontSize:18,fontWeight:700,color:'#e2e2e8' }}>{c.val}</p>
+              </div>
+            ))}
+            {/* About extra card */}
+            <div className="card d3" style={{ padding:'24px 22px',borderRadius:18,gridColumn:'span 2',background:`${ac}0a`,border:`1px solid ${ac}20` }}>
+              <p style={{ fontSize:10,color:ac,letterSpacing:'.1em',textTransform:'uppercase',marginBottom:10,fontWeight:600 }}>Modo de trabajo</p>
+              <p style={{ fontSize:14,color:'#888',lineHeight:1.65 }}>Proyecto único · Sin agencia · Comunicación directa · Código real</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Projects ──────────────────────────────────────────────────────────────────
+const PROJECT_VISUALS = [
+  <svg key={0} width="100%" height="100%" viewBox="0 0 520 280" preserveAspectRatio="xMidYMid slice">
+    <rect width="520" height="280" fill="#120608"/>
+    {[...Array(5)].map((_,row)=>[...Array(9)].map((_,col)=>(
+      <rect key={`${row}-${col}`} x={col*58+6} y={row*46+16} width={48} height={34} rx={5} fill={(row+col)%3===0?'#e74c3c1a':'#e74c3c08'} stroke="#e74c3c22" strokeWidth={0.5}/>
+    )))}
+    <rect x={180} y={264} width={160} height={7} rx={3} fill="#e74c3c20"/>
+    <text x="260" y="160" textAnchor="middle" fill="#e74c3c25" fontSize="10" fontFamily="Outfit,sans-serif" fontWeight="700" letterSpacing="4">ESCENARIO</text>
+  </svg>,
+  <svg key={1} width="100%" height="100%" viewBox="0 0 520 280" preserveAspectRatio="xMidYMid slice">
+    <rect width="520" height="280" fill="#0e0c09"/>
+    {[[70,55,110,225],[180,75,90,205],[270,95,120,185],[390,65,110,215]].map(([x,y,w,h],i)=>(
+      <rect key={i} x={x} y={y} width={w} height={h} fill="none" stroke="#d4a54720" strokeWidth="0.5"/>
+    ))}
+    <rect x="80" y="75" width="44" height="70" fill="#d4a54708"/>
+    <circle cx="440" cy="60" r="40" fill="none" stroke="#d4a54718" strokeWidth="0.5"/>
+    <line x1="40" y1="30" x2="480" y2="265" stroke="#d4a5470a" strokeWidth="0.5"/>
+    <line x1="0" y1="265" x2="520" y2="265" stroke="#d4a54715" strokeWidth="0.5"/>
+  </svg>,
+  <svg key={2} width="100%" height="100%" viewBox="0 0 520 280" preserveAspectRatio="xMidYMid slice">
+    <rect width="520" height="280" fill="#060f08"/>
+    <rect x="25" y="18" width="470" height="244" rx="8" fill="none" stroke="#27ae6022" strokeWidth="0.5"/>
+    <line x1="260" y1="18" x2="260" y2="262" stroke="#27ae6018" strokeWidth="0.5"/>
+    <circle cx="260" cy="140" r="60" fill="none" stroke="#27ae601a" strokeWidth="0.5"/>
+    <circle cx="260" cy="140" r="5" fill="#27ae6050"/>
+    {[...Array(8)].map((_,i)=>{ const a=(i/8)*Math.PI*2,x=260+Math.cos(a)*60,y=140+Math.sin(a)*60; return <line key={i} x1={x} y1={y} x2={260+Math.cos(a)*68} y2={140+Math.sin(a)*68} stroke="#27ae6030" strokeWidth="1"/>; })}
+    <rect x="25" y="90" width="55" height="100" fill="none" stroke="#27ae6018" strokeWidth="0.5"/>
+    <rect x="440" y="90" width="55" height="100" fill="none" stroke="#27ae6018" strokeWidth="0.5"/>
+  </svg>,
+];
+
+function ProjectCard({ p, cta, ac, idx }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div className="reveal card" style={{ borderRadius:24,overflow:'hidden',display:'grid',gridTemplateColumns:'1fr 1fr',gap:0,minHeight:320,border:`1px solid ${hov?p.hue+'40':'#1e1e26'}`,transition:'border-color .3s,transform .35s cubic-bezier(.16,1,.3,1)',transform:hov?'translateY(-5px)':'none',background:'#141418' }}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+      {/* Visual side */}
+      <div style={{ position:'relative',overflow:'hidden' }}>
+        {PROJECT_VISUALS[idx]}
+        <div style={{ position:'absolute',inset:0,background:`linear-gradient(to right,transparent 60%,#141418)` }}/>
+        <div style={{ position:'absolute',top:20,left:20 }}>
+          <span style={{ fontSize:10,fontWeight:700,color:p.hue,background:`${p.hue}15`,border:`1px solid ${p.hue}30`,borderRadius:100,padding:'4px 12px',letterSpacing:'.08em' }}>{p.cat}</span>
+        </div>
+        <div style={{ position:'absolute',bottom:20,left:20 }}>
+          <span style={{ fontSize:11,color:'#2a2a35',letterSpacing:'.06em' }}>{p.year}</span>
+        </div>
+      </div>
+      {/* Content side */}
+      <div style={{ padding:'32px 32px 32px 28px',display:'flex',flexDirection:'column',justifyContent:'space-between' }}>
+        <div>
+          <p style={{ fontSize:10,fontWeight:700,color:'#444',letterSpacing:'.1em',marginBottom:10 }}>{p.n}</p>
+          <h3 style={{ fontSize:'clamp(20px,2vw,26px)',fontWeight:800,letterSpacing:'-.025em',marginBottom:14,lineHeight:1.2 }}>{p.name}</h3>
+          <p style={{ fontSize:13.5,color:'#666',lineHeight:1.72,marginBottom:20,textWrap:'pretty' }}>{p.desc}</p>
+          {/* Quote */}
+          <div style={{ background:`${p.hue}0c`,border:`1px solid ${p.hue}20`,borderRadius:12,padding:'14px 16px',marginBottom:20 }}>
+            <p style={{ fontSize:12,color:'#888',lineHeight:1.65,fontStyle:'italic' }}>{p.quote}</p>
+          </div>
+          {/* Tags */}
+          <div style={{ display:'flex',flexWrap:'wrap',gap:6,marginBottom:24 }}>
+            {p.tags.map(tag=><span key={tag} style={{ fontSize:10,color:'#444',background:'#1a1a22',border:'1px solid #252530',borderRadius:100,padding:'3px 10px',letterSpacing:'.04em' }}>{tag}</span>)}
+          </div>
+        </div>
+        <a href={p.url} target="_blank" style={{ display:'inline-flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:ac,transition:'gap .2s' }}
+          onMouseEnter={e=>e.currentTarget.style.gap='12px'} onMouseLeave={e=>e.currentTarget.style.gap='8px'}>
+          {cta}
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function Projects({ t, ac }) {
+  return (
+    <section id="work" style={{ padding:'120px 48px',background:'#0e0e12' }}>
+      <div style={{ maxWidth:1140,margin:'0 auto' }}>
+        <div className="reveal" style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:56,flexWrap:'wrap',gap:20 }}>
+          <div>
+            <SectionTag ac={ac}>{t.projects.tag}</SectionTag>
+            <h2 style={{ fontSize:'clamp(36px,5vw,62px)',fontWeight:800,letterSpacing:'-.04em',lineHeight:1.06,whiteSpace:'pre-line' }}>{t.projects.h}</h2>
+          </div>
+          <p style={{ fontSize:15,color:'#555',maxWidth:320,lineHeight:1.7,paddingBottom:8,textWrap:'pretty' }}>{t.projects.sub}</p>
+        </div>
+        <div style={{ display:'flex',flexDirection:'column',gap:20 }}>
+          {t.projects.items.map((p,i)=><ProjectCard key={i} p={p} cta={t.projects.cta} ac={ac} idx={i}/>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Services ──────────────────────────────────────────────────────────────────
+function Services({ t, ac }) {
+  const items = [
+    { icon:'◈', title: t.nav.services === 'Services' ? 'Landing Pages' : 'Landing Pages', desc: t.nav.services === 'Services' ? 'Pages that convert. Design + development, SEO and CRO included.' : 'Páginas que convierten. Diseño + desarrollo, SEO y CRO incluido.', tags:['Next.js','Framer','SEO','CRO'] },
+    { icon:'⬡', title: t.nav.services === 'Services' ? 'Custom Software' : 'Software a medida', desc: t.nav.services === 'Services' ? 'Complex web and mobile apps. Dashboards, booking systems, internal SaaS.' : 'Apps web y mobile complejas. Dashboards, sistemas de reservas, SaaS internos.', tags:['React','Node.js','PostgreSQL','Mobile'] },
+    { icon:'⟳', title: t.nav.services === 'Services' ? 'AI Automations' : 'Automatizaciones IA', desc: t.nav.services === 'Services' ? 'Intelligent flows that work for you 24/7. Your team focuses on what matters.' : 'Flujos inteligentes que trabajan por ti 24/7. Tu equipo hace lo que importa.', tags:['n8n','OpenAI','Make','APIs'] },
+  ];
+  return (
+    <section id="services" style={{ padding:'120px 48px' }}>
+      <div style={{ maxWidth:1140,margin:'0 auto' }}>
+        <div className="reveal" style={{ marginBottom:56 }}>
+          <SectionTag ac={ac}>{t.nav.services}</SectionTag>
+          <h2 style={{ fontSize:'clamp(36px,5vw,62px)',fontWeight:800,letterSpacing:'-.04em',lineHeight:1.06 }}>{t.stack.h}</h2>
+        </div>
+        <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16 }}>
+          {items.map((s,i)=>(
+            <div key={i} className={`card reveal d${i+1}`} style={{ padding:'36px 32px',borderRadius:20,position:'relative',overflow:'hidden' }}>
+              <div style={{ position:'absolute',top:0,right:0,width:80,height:80,background:`${ac}08`,borderRadius:'0 20px 0 80px' }}/>
+              <div style={{ fontSize:24,color:ac,marginBottom:20 }}>{s.icon}</div>
+              <h3 style={{ fontSize:20,fontWeight:700,letterSpacing:'-.02em',marginBottom:12 }}>{s.title}</h3>
+              <p style={{ fontSize:14,color:'#666',lineHeight:1.7,marginBottom:24,textWrap:'pretty' }}>{s.desc}</p>
+              <div style={{ display:'flex',flexWrap:'wrap',gap:6 }}>
+                {s.tags.map(tag=><span key={tag} style={{ fontSize:10,color:'#444',background:'#1a1a22',border:'1px solid #252530',borderRadius:100,padding:'3px 10px' }}>{tag}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Tech Stack ────────────────────────────────────────────────────────────────
+function Stack({ t, ac }) {
+  return (
+    <section id="stack" style={{ padding:'120px 48px',background:'#0e0e12' }}>
+      <div style={{ maxWidth:1140,margin:'0 auto' }}>
+        <div className="reveal" style={{ marginBottom:56 }}>
+          <SectionTag ac={ac}>{t.stack.tag}</SectionTag>
+          <h2 style={{ fontSize:'clamp(36px,5vw,62px)',fontWeight:800,letterSpacing:'-.04em',lineHeight:1.06,whiteSpace:'pre-line' }}>{t.stack.h}</h2>
+        </div>
+        <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16 }}>
+          {t.stack.cats.map((cat,ci)=>(
+            <div key={ci} className={`reveal d${ci+1}`}>
+              <p style={{ fontSize:10,fontWeight:700,color:ac,letterSpacing:'.12em',textTransform:'uppercase',marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${ac}20` }}>{cat.label}</p>
+              <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
+                {cat.items.map((item,ii)=>(
+                  <div key={ii} className="card" style={{ display:'flex',alignItems:'center',gap:12,padding:'12px 14px',borderRadius:12 }}>
+                    <span style={{ fontSize:16,width:26,textAlign:'center',flexShrink:0 }}>{item.icon}</span>
+                    <span style={{ fontSize:13,fontWeight:500,color:'#888' }}>{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Achievements ──────────────────────────────────────────────────────────────
+function Achievements({ t, ac }) {
+  return (
+    <section style={{ padding:'80px 48px', position:'relative', overflow:'hidden', borderTop:`1px solid ${ac}15`, borderBottom:`1px solid ${ac}15` }}>
+      {/* Gradient band background */}
+      <div style={{ position:'absolute', inset:0, background:`linear-gradient(120deg, #0c0c10 0%, ${ac}12 40%, ${ac}1a 60%, #0c0c10 100%)`, zIndex:0, pointerEvents:'none' }}/>
+      <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:700, height:200, background:`radial-gradient(ellipse, ${ac}18 0%, transparent 70%)`, zIndex:0, pointerEvents:'none' }}/>
+      <div style={{ maxWidth:1140,margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:32,position:'relative',zIndex:1 }}>
+        {t.achievements.items.map((a,i)=>(
+          <div key={i} className={`reveal d${i+1}`} style={{ textAlign:'center' }}>
+            <div style={{ fontSize:'clamp(40px,4vw,60px)',fontWeight:800,color:ac,letterSpacing:'-.04em',lineHeight:1 }}>{a.v}</div>
+            <div style={{ fontSize:14,fontWeight:700,color:'#e2e2e8',marginTop:8,marginBottom:4 }}>{a.l}</div>
+            <div style={{ fontSize:12,color:'#444' }}>{a.sub}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── Contact ───────────────────────────────────────────────────────────────────
+function Contact({ t, ac }) {
+  const f = t.contact.form;
+  const [fields, setFields] = useState({ name:'', email:'', project:'' });
+  const [status, setStatus] = useState('idle');
+
+  const submit = async e => {
+    e.preventDefault();
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSPREE, { method:'POST', headers:{ 'Content-Type':'application/json', Accept:'application/json' }, body:JSON.stringify({ name:fields.name, email:fields.email, message:fields.project }) });
+      setStatus(res.ok ? 'sent' : 'sent');
+    } catch {
+      window.location.href = `mailto:${EMAIL}?subject=Proyecto de ${encodeURIComponent(fields.name)}&body=${encodeURIComponent(fields.project)}`;
+      setStatus('sent');
+    }
+  };
+
+  return (
+    <section id="contact" style={{ padding:'120px 48px' }}>
+      <div style={{ maxWidth:1140,margin:'0 auto' }}>
+        <div style={{ display:'grid',gridTemplateColumns:'1fr 1.1fr',gap:80,alignItems:'flex-start' }}>
+          {/* Left */}
+          <div className="reveal">
+            <SectionTag ac={ac}>{t.contact.tag}</SectionTag>
+            <h2 style={{ fontSize:'clamp(36px,5vw,60px)',fontWeight:800,letterSpacing:'-.04em',lineHeight:1.06,marginBottom:20,whiteSpace:'pre-line' }}>{t.contact.h}</h2>
+            <p style={{ fontSize:16,color:'#666',lineHeight:1.72,marginBottom:36,maxWidth:380,textWrap:'pretty' }}>{t.contact.sub}</p>
+
+            <a href={CALENDLY} target="_blank"
+              style={{ display:'inline-flex',alignItems:'center',gap:10,fontSize:15,fontWeight:700,color:'#0c0c10',background:ac,padding:'15px 32px',borderRadius:100,marginBottom:16,transition:'transform .25s,box-shadow .25s',boxShadow:`0 0 40px ${ac}25` }}
+              onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 10px 48px ${ac}50`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=`0 0 40px ${ac}25`;}}>
+              {t.contact.cta}
+            </a>
+            <div style={{ display:'flex',alignItems:'center',gap:8,fontSize:12,color:'#333',marginBottom:48 }}>
+              <Dot ac={ac}/>{t.contact.avail}
+            </div>
+
+
+          </div>
+
+          {/* Right — form */}
+          <div className="reveal d2">
+            {status === 'sent' ? (
+              <div className="card" style={{ borderRadius:24,padding:'56px 40px',textAlign:'center' }}>
+                <div style={{ width:56,height:56,borderRadius:'50%',background:`${ac}15`,border:`1px solid ${ac}30`,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px',fontSize:22,color:ac }}>✓</div>
+                <h3 style={{ fontSize:22,fontWeight:700,marginBottom:10 }}>{f.ok}</h3>
+              </div>
+            ) : (
+              <form onSubmit={submit} style={{ display:'flex',flexDirection:'column',gap:14 }}>
+                <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14 }}>
+                  <input required className="inp" placeholder={f.name} value={fields.name} onChange={e=>setFields(p=>({...p,name:e.target.value}))} style={{ '--ac':ac }} onFocus={e=>e.target.style.borderColor=ac} onBlur={e=>e.target.style.borderColor='#252530'}/>
+                  <input required type="email" className="inp" placeholder={f.email} value={fields.email} onChange={e=>setFields(p=>({...p,email:e.target.value}))} onFocus={e=>e.target.style.borderColor=ac} onBlur={e=>e.target.style.borderColor='#252530'}/>
+                </div>
+                <textarea required rows={6} className="inp" placeholder={f.project} value={fields.project} onChange={e=>setFields(p=>({...p,project:e.target.value}))} style={{ resize:'vertical',minHeight:140 }} onFocus={e=>e.target.style.borderColor=ac} onBlur={e=>e.target.style.borderColor='#252530'}/>
+                <div style={{ display:'flex',justifyContent:'flex-end' }}>
+                  <button type="submit" disabled={status==='sending'}
+                    style={{ background:ac,color:'#0c0c10',fontWeight:700,fontSize:15,padding:'14px 32px',borderRadius:100,transition:'transform .25s,box-shadow .25s,opacity .2s',boxShadow:`0 0 24px ${ac}20`,opacity:status==='sending'?.6:1 }}
+                    onMouseEnter={e=>{ if(status!=='sending'){e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow=`0 8px 36px ${ac}45`;}}}
+                    onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow=`0 0 24px ${ac}20`;}}>
+                    {status==='sending'?'...' : f.send}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+function Footer({ t, ac }) {
+  return (
+    <footer style={{ background:'#0c0c10', borderTop:'1px solid #1a1a22', overflow:'hidden', paddingBottom:0 }}>
+      {/* Minimal top row: copyright + links */}
+      <div style={{ padding:'28px 48px 20px', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:12 }}>
+        <p style={{ fontSize:11,color:'#252530',letterSpacing:'.04em' }}>{t.footer.copy}</p>
+        <div style={{ display:'flex', gap:20 }}>
+          {['work','services','about','stack'].map(k=>(
+            <a key={k} href={`#${k}`} style={{ fontSize:11,color:'#252530',transition:'color .2s',fontWeight:500,letterSpacing:'.04em' }}
+              onMouseEnter={e=>e.currentTarget.style.color='#666'} onMouseLeave={e=>e.currentTarget.style.color='#252530'}>{t.nav[k]}</a>
+          ))}
+        </div>
+      </div>
+
+      {/* Giant name — gradient two-tone yellow */}
+      <div style={{ position:'relative', height:'clamp(120px, 18vw, 240px)', overflow:'hidden' }}>
+        <div style={{
+          position:'absolute', bottom:'-8%', left:'50%', transform:'translateX(-50%)',
+          fontSize:'clamp(72px, 12.5vw, 190px)', fontWeight:800, letterSpacing:'-.05em',
+          whiteSpace:'nowrap', lineHeight:1,
+          background:`linear-gradient(135deg, ${ac} 0%, #c8960a 55%, ${ac}55 100%)`,
+          WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent',
+          backgroundClip:'text',
+          opacity: 0.18,
+          userSelect:'none', pointerEvents:'none',
+          textAlign:'center',
+        }}>CRISTIAN MATEOS</div>
+      </div>
+    </footer>
+  );
+}
+
+// ── Tweaks ────────────────────────────────────────────────────────────────────
+function AppTweaks({ tweaks, setTweaks }) {
+  return (
+    <TweaksPanel>
+      <TweakSection label="Color" />
+      <TweakColor id="accentC" label="Color de acento" value={tweaks.accentC} onChange={v=>setTweaks({accentC:v})} />
+      <TweakSection label="Hero" />
+      <TweakToggle id="showAvail" label="Badge disponibilidad" value={tweaks.showAvail} onChange={v=>setTweaks({showAvail:v})} />
+    </TweaksPanel>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+function App() {
+  const [lang, setLang] = useState('es');
+  const [tweaks, setTweaks] = useTweaks(TWEAK_DEFAULTS);
+  const t = T[lang];
+  const ac = tweaks.accentC;
+
+  useEffect(()=>{ document.documentElement.style.setProperty('--ac',ac); startCursor(); },[]);
+  useEffect(()=>{ document.documentElement.style.setProperty('--ac',ac); },[ac]);
+  useReveal();
+
+  return (
+    <>
+      <Nav t={t} lang={lang} setLang={setLang} ac={ac}/>
+      <Hero t={t} ac={ac} showAvail={tweaks.showAvail}/>
+      <About t={t} ac={ac}/>
+      <Projects t={t} ac={ac}/>
+      <Services t={t} ac={ac}/>
+      <Stack t={t} ac={ac}/>
+      <Achievements t={t} ac={ac}/>
+      <Contact t={t} ac={ac}/>
+      <Footer t={t} ac={ac}/>
+      <AppTweaks tweaks={tweaks} setTweaks={setTweaks}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
