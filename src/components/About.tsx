@@ -40,10 +40,10 @@ export function About({ t, ac }: AboutProps) {
             >
               {t.about.h}
             </h2>
-            <p style={{ fontSize: 16, color: "#777", lineHeight: 1.78, marginBottom: 16 }}>
+            <p style={{ fontSize: 16, color: "#5A7A9E", lineHeight: 1.78, marginBottom: 16 }}>
               {t.about.p1}
             </p>
-            <p style={{ fontSize: 16, color: "#777", lineHeight: 1.78, marginBottom: 36 }}>
+            <p style={{ fontSize: 16, color: "#5A7A9E", lineHeight: 1.78, marginBottom: 36 }}>
               {t.about.p2}
             </p>
 
@@ -57,9 +57,9 @@ export function About({ t, ac }: AboutProps) {
                     gap: 6,
                     fontSize: 12,
                     fontWeight: 500,
-                    color: "#888",
-                    background: "#141418",
-                    border: "1px solid #1e1e26",
+                    color: "#6B82A8",
+                    background: "#0D1629",
+                    border: "1px solid #1E2D4A",
                     borderRadius: 100,
                     padding: "7px 14px",
                   }}
@@ -77,8 +77,8 @@ export function About({ t, ac }: AboutProps) {
                 rel="noopener noreferrer"
                 style={{
                   fontSize: 13,
-                  color: "#666",
-                  border: "1px solid #1e1e26",
+                  color: "#4A6A8E",
+                  border: "1px solid #1E2D4A",
                   borderRadius: 100,
                   padding: "10px 20px",
                   transition: "all .2s",
@@ -89,8 +89,8 @@ export function About({ t, ac }: AboutProps) {
                   e.currentTarget.style.borderColor = ac;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#666";
-                  e.currentTarget.style.borderColor = "#1e1e26";
+                  e.currentTarget.style.color = "#4A6A8E";
+                  e.currentTarget.style.borderColor = "#1E2D4A";
                 }}
               >
                 LinkedIn →
@@ -100,7 +100,7 @@ export function About({ t, ac }: AboutProps) {
                 onClick={openCalendarTab}
                 style={{
                   fontSize: 13,
-                  color: "#0c0c10",
+                  color: "#070B14",
                   background: ac,
                   borderRadius: 100,
                   padding: "10px 20px",
@@ -126,7 +126,7 @@ export function About({ t, ac }: AboutProps) {
                 <p
                   style={{
                     fontSize: 10,
-                    color: "#444",
+                    color: "#3A4A6A",
                     letterSpacing: ".1em",
                     textTransform: "uppercase",
                     marginBottom: 10,
@@ -160,7 +160,7 @@ export function About({ t, ac }: AboutProps) {
               >
                 {t.about.workMode.label}
               </p>
-              <p style={{ fontSize: 14, color: "#888", lineHeight: 1.65 }}>
+              <p style={{ fontSize: 14, color: "#6B82A8", lineHeight: 1.65 }}>
                 {t.about.workMode.val}
               </p>
             </div>

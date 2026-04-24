@@ -87,7 +87,7 @@ export function Hero({ t, ac }: HeroProps) {
             </span>
           </div>
 
-          <p style={{ fontSize: 15, color: "#555", marginBottom: 14, fontWeight: 500, animation: "fadeUp .6s .1s ease both" }}>
+          <p style={{ fontSize: 15, color: "#4A6A8E", marginBottom: 14, fontWeight: 500, animation: "fadeUp .6s .1s ease both" }}>
             {t.hero.hi}
           </p>
 
@@ -109,7 +109,7 @@ export function Hero({ t, ac }: HeroProps) {
           <p
             style={{
               fontSize: "clamp(15px,1.4vw,17px)",
-              color: "#777",
+              color: "#5A7A9E",
               maxWidth: 520,
               lineHeight: 1.72,
               marginBottom: 40,
@@ -133,7 +133,7 @@ export function Hero({ t, ac }: HeroProps) {
               onClick={openCalendarTab}
               style={{
                 background: ac,
-                color: "#0c0c10",
+                color: "#070B14",
                 fontWeight: 700,
                 fontSize: 15,
                 padding: "14px 30px",
@@ -156,19 +156,19 @@ export function Hero({ t, ac }: HeroProps) {
               href="#work"
               style={{
                 fontSize: 15,
-                color: "#bbb",
+                color: "#94A3B8",
                 padding: "14px 30px",
-                border: "1px solid #252530",
+                border: "1px solid #1E2D4A",
                 borderRadius: 100,
                 transition: "all .2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#444";
+                e.currentTarget.style.borderColor = "#3A4A6A";
                 e.currentTarget.style.color = "#fff";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#252530";
-                e.currentTarget.style.color = "#bbb";
+                e.currentTarget.style.borderColor = "#1E2D4A";
+                e.currentTarget.style.color = "#94A3B8";
               }}
             >
               {t.hero.cta2}
@@ -202,8 +202,8 @@ export function Hero({ t, ac }: HeroProps) {
             style={{
               width: 260,
               height: 310,
-              background: "#141418",
-              border: "1px solid #1e1e26",
+              background: "#0D1629",
+              border: "1px solid #1E2D4A",
               borderRadius: 24,
               position: "relative",
               overflow: "hidden",
@@ -238,7 +238,7 @@ export function Hero({ t, ac }: HeroProps) {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: `linear-gradient(to top, #141418 0%, transparent 50%)`,
+                background: `linear-gradient(to top, #0D1629 0%, transparent 50%)`,
                 zIndex: 1,
               }}
             />
@@ -255,7 +255,7 @@ export function Hero({ t, ac }: HeroProps) {
               <p
                 style={{
                   fontSize: 10,
-                  color: "#333",
+                  color: "#2A3A5A",
                   letterSpacing: ".1em",
                   textAlign: "center",
                 }}
@@ -272,7 +272,7 @@ export function Hero({ t, ac }: HeroProps) {
                 padding: "8px 12px",
                 fontWeight: 700,
                 fontSize: 13,
-                color: "#0c0c10",
+                color: "#070B14",
                 zIndex: 3,
               }}
             >
@@ -291,7 +291,7 @@ export function Hero({ t, ac }: HeroProps) {
                 style={{ padding: "10px 16px", borderRadius: 12, display: "flex", alignItems: "center", gap: 6 }}
               >
                 <span style={{ fontSize: 14 }}>{icon}</span>
-                <span style={{ fontSize: 12, fontWeight: 500, color: "#888" }}>{label}</span>
+                <span style={{ fontSize: 12, fontWeight: 500, color: "#6B82A8" }}>{label}</span>
               </div>
             ))}
           </div>
@@ -306,9 +306,9 @@ export function Hero({ t, ac }: HeroProps) {
           left: 0,
           right: 0,
           overflow: "hidden",
-          borderTop: "1px solid #1a1a22",
+          borderTop: "1px solid #0D1629",
           padding: "14px 0",
-          background: "#161410",
+          background: "#0A0F1E",
         }}
       >
         <div className="strip-track">
@@ -325,7 +325,7 @@ export function Hero({ t, ac }: HeroProps) {
                 letterSpacing: ".06em",
                 textTransform: "uppercase",
                 whiteSpace: "nowrap",
-                color: i % 3 === 0 ? ac : "#2a2a35",
+                color: i % 3 === 0 ? ac : "#2A3F68",
               }}
             >
               {s}{" "}
@@ -334,7 +334,7 @@ export function Hero({ t, ac }: HeroProps) {
                   width: 4,
                   height: 4,
                   borderRadius: "50%",
-                  background: "#2a2a35",
+                  background: "#2A3F68",
                   display: "inline-block",
                 }}
               />

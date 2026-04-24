@@ -95,9 +95,9 @@ const T: Record<Lang, Translations> = {
     hero: {
       avail: "Disponible para proyectos",
       hi: "Hola, soy Cristian.",
-      h1: "Desarrollo software",
-      h1Accent: "que trabaja para ti.",
-      sub: "Full-stack developer con más de 12 años convirtiendo ideas complejas en productos digitales sólidos, seguros y con resultados reales.",
+      h1: "Software a medida para",
+      h1Accent: "hacer crecer tu negocio.",
+      sub: "Full-stack developer con más de 12 años construyendo productos digitales que generan resultados reales. Sin agencias, sin intermediarios.",
       cta: "Agenda una llamada →",
       cta2: "Ver proyectos",
       pills: [
@@ -322,9 +322,9 @@ const T: Record<Lang, Translations> = {
     hero: {
       avail: "Available for projects",
       hi: "Hi, I'm Cristian.",
-      h1: "I build software",
-      h1Accent: "that works for you.",
-      sub: "Full-stack developer with 12+ years turning complex ideas into solid, secure digital products with real results.",
+      h1: "Custom software to",
+      h1Accent: "grow your business.",
+      sub: "Full-stack developer with 12+ years building digital products that generate real results. No agencies, no middlemen.",
       cta: "Book a call →",
       cta2: "See projects",
       pills: [

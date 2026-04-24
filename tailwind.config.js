@@ -15,7 +15,7 @@ module.exports = {
         surface: "#141418",
         border: "#1e1e26",
         muted: "#2a2a35",
-        ac: "#e8c96d",
+        ac: "#3B82F6",
       },
       animation: {
         "slide-x": "slide-x 30s linear infinite",

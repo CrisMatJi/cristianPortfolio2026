@@ -32,7 +32,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
 
   const linkBase: React.CSSProperties = {
     fontSize: 13,
-    color: "#777",
+    color: "#5A7A9E",
     transition: "color .2s",
     fontWeight: 500,
     cursor: "none",
@@ -67,7 +67,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
             href={`#${k}`}
             style={linkBase}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#e2e2e8")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#777")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#5A7A9E")}
           >
             {t.nav[k]}
           </a>
@@ -78,20 +78,20 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
           onClick={() => setLang(lang === "es" ? "en" : "es")}
           style={{
             fontSize: 11,
-            color: "#444",
+            color: "#3A4A6A",
             letterSpacing: ".1em",
             padding: "6px 12px",
-            border: "1px solid #252530",
+            border: "1px solid #1E2D4A",
             borderRadius: 100,
             transition: "all .2s",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "#aaa";
-            e.currentTarget.style.borderColor = "#444";
+            e.currentTarget.style.borderColor = "#3A4A6A";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = "#444";
-            e.currentTarget.style.borderColor = "#252530";
+            e.currentTarget.style.color = "#3A4A6A";
+            e.currentTarget.style.borderColor = "#1E2D4A";
           }}
         >
           {lang === "es" ? "EN" : "ES"}
@@ -102,7 +102,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: "#0c0c10",
+            color: "#070B14",
             background: ac,
             padding: "10px 22px",
             borderRadius: 100,
@@ -133,10 +133,10 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
         gap: 0,
         background: "rgba(22,20,14,0.92)",
         backdropFilter: "blur(24px) saturate(180%)",
-        border: "1px solid #252530",
+        border: "1px solid #1E2D4A",
         borderRadius: 100,
         padding: "6px 6px 6px 20px",
-        boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 0.5px #2c2618 inset",
+        boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 0.5px #1E2D4A inset",
         whiteSpace: "nowrap",
         transition:
           "opacity .4s cubic-bezier(.16,1,.3,1), transform .4s cubic-bezier(.16,1,.3,1)",
@@ -147,34 +147,34 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
           <a
             key={k}
             href={`#${k}`}
-            style={{ fontSize: 13, color: "#666", padding: "6px 8px", transition: "color .2s", fontWeight: 500 }}
+            style={{ fontSize: 13, color: "#4A6A8E", padding: "6px 8px", transition: "color .2s", fontWeight: 500 }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#e2e2e8")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#4A6A8E")}
           >
             {t.nav[k]}
           </a>
         ))}
       </div>
-      <div style={{ width: 1, height: 20, background: "#252530", margin: "0 8px" }} />
+      <div style={{ width: 1, height: 20, background: "#1E2D4A", margin: "0 8px" }} />
       <button
         onClick={() => setLang(lang === "es" ? "en" : "es")}
         style={{
           fontSize: 11,
-          color: "#444",
+          color: "#3A4A6A",
           letterSpacing: ".1em",
           padding: "5px 10px",
-          border: "1px solid #252530",
+          border: "1px solid #1E2D4A",
           borderRadius: 100,
           transition: "all .2s",
           marginRight: 8,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = "#aaa";
-          e.currentTarget.style.borderColor = "#444";
+          e.currentTarget.style.borderColor = "#3A4A6A";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.color = "#444";
-          e.currentTarget.style.borderColor = "#252530";
+          e.currentTarget.style.color = "#3A4A6A";
+          e.currentTarget.style.borderColor = "#1E2D4A";
         }}
       >
         {lang === "es" ? "EN" : "ES"}
@@ -184,7 +184,7 @@ export function Nav({ t, lang, setLang, ac }: NavProps) {
         onClick={() => window.dispatchEvent(new CustomEvent("open-calendar-tab"))}
         style={{
           background: ac,
-          color: "#0c0c10",
+          color: "#070B14",
           fontSize: 13,
           fontWeight: 700,
           padding: "9px 20px",

@@ -31,10 +31,10 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
         gridTemplateColumns: "1fr 1fr",
         gap: 0,
         minHeight: 320,
-        border: `1px solid ${hov ? p.hue + "40" : "#2c2618"}`,
+        border: `1px solid ${hov ? p.hue + "40" : "#1E2D4A"}`,
         transition: "border-color .3s, transform .35s cubic-bezier(.16,1,.3,1)",
         transform: hov ? "translateY(-5px)" : "none",
-        background: "#231d12",
+        background: "#0D1629",
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -72,7 +72,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
           </span>
         </div>
         <div style={{ position: "absolute", bottom: 20, left: 20, zIndex: 1 }}>
-          <span style={{ fontSize: 11, color: "#2a2a35", letterSpacing: ".06em" }}>{p.year}</span>
+          <span style={{ fontSize: 11, color: "#2A3F68", letterSpacing: ".06em" }}>{p.year}</span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
         }}
       >
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#444", letterSpacing: ".1em", marginBottom: 10 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "#3A4A6A", letterSpacing: ".1em", marginBottom: 10 }}>
             {p.n}
           </p>
           <h3
@@ -100,7 +100,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
           >
             {p.name}
           </h3>
-          <p style={{ fontSize: 13.5, color: "#666", lineHeight: 1.72, marginBottom: 20 }}>
+          <p style={{ fontSize: 13.5, color: "#4A6A8E", lineHeight: 1.72, marginBottom: 20 }}>
             {p.desc}
           </p>
           <div
@@ -112,7 +112,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
               marginBottom: 20,
             }}
           >
-            <p style={{ fontSize: 12, color: "#888", lineHeight: 1.65, fontStyle: "italic" }}>
+            <p style={{ fontSize: 12, color: "#6B82A8", lineHeight: 1.65, fontStyle: "italic" }}>
               {p.quote}
             </p>
           </div>
@@ -122,9 +122,9 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
                 key={tag}
                 style={{
                   fontSize: 10,
-                  color: "#444",
-                  background: "#1a1a22",
-                  border: "1px solid #252530",
+                  color: "#3A4A6A",
+                  background: "#0D1629",
+                  border: "1px solid #1E2D4A",
                   borderRadius: 100,
                   padding: "3px 10px",
                   letterSpacing: ".04em",
@@ -165,7 +165,7 @@ interface ProjectsProps {
 
 export function Projects({ t, ac }: ProjectsProps) {
   return (
-    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "#161410" }}>
+    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "#0A0F1E" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div
           className="reveal"
@@ -193,7 +193,7 @@ export function Projects({ t, ac }: ProjectsProps) {
               <span style={{ color: ac }}>{t.projects.h2}</span>
             </h2>
           </div>
-          <p style={{ fontSize: 15, color: "#555", maxWidth: 320, lineHeight: 1.7, paddingBottom: 8 }}>
+          <p style={{ fontSize: 15, color: "#4A6A8E", maxWidth: 320, lineHeight: 1.7, paddingBottom: 8 }}>
             {t.projects.sub}
           </p>
         </div>

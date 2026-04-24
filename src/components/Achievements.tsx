@@ -23,7 +23,7 @@ export function Achievements({ t, ac }: AchievementsProps) {
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(120deg, #1a1710 0%, ${ac}12 40%, ${ac}1a 60%, #1a1710 100%)`,
+          background: `linear-gradient(120deg, #070B14 0%, ${ac}12 40%, ${ac}1a 60%, #070B14 100%)`,
           zIndex: 0,
           pointerEvents: "none",
         }}
@@ -73,7 +73,7 @@ export function Achievements({ t, ac }: AchievementsProps) {
             <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e2e8", marginTop: 8, marginBottom: 4 }}>
               {a.l}
             </div>
-            <div style={{ fontSize: 12, color: "#444" }}>{a.sub}</div>
+            <div style={{ fontSize: 12, color: "#3A4A6A" }}>{a.sub}</div>
           </div>
         ))}
       </div>

@@ -39,7 +39,7 @@ export function Badge({ children, ac, filled }: BadgeProps) {
         borderRadius: 100,
         whiteSpace: "nowrap",
         background: filled ? ac : `${ac}12`,
-        color: filled ? "#0c0c10" : ac,
+        color: filled ? "#070B14" : ac,
         border: `1px solid ${ac}30`,
       }}
     >

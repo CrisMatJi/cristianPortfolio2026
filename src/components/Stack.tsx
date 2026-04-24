@@ -11,7 +11,7 @@ interface StackProps {
 
 export function Stack({ t, ac }: StackProps) {
   return (
-    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "#161410" }}>
+    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "#0A0F1E" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div className="reveal" style={{ marginBottom: 64 }}>
           <SectionTag ac={ac}>{t.stack.tag}</SectionTag>
@@ -44,8 +44,8 @@ export function Stack({ t, ac }: StackProps) {
               <div
                 className={`reveal d${i + 1}`}
                 style={{
-                  background: "#141418",
-                  border: "1px solid #1e1e26",
+                  background: "#0D1629",
+                  border: "1px solid #1E2D4A",
                   borderRadius: 16,
                   padding: "28px 22px",
                   transition: "border-color .3s",
@@ -54,7 +54,7 @@ export function Stack({ t, ac }: StackProps) {
                   (e.currentTarget.style.borderColor = `${ac}40`)
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.borderColor = "#1e1e26")
+                  (e.currentTarget.style.borderColor = "#1E2D4A")
                 }
               >
                 {/* Large decorative number */}
@@ -81,7 +81,7 @@ export function Stack({ t, ac }: StackProps) {
                 >
                   {step.title}
                 </h3>
-                <p style={{ fontSize: 13, color: "#555", lineHeight: 1.65 }}>
+                <p style={{ fontSize: 13, color: "#4A6A8E", lineHeight: 1.65 }}>
                   {step.desc}
                 </p>
               </div>
@@ -133,7 +133,7 @@ export function Stack({ t, ac }: StackProps) {
           <p
             style={{
               fontSize: 10,
-              color: "#333",
+              color: "#2A3A5A",
               letterSpacing: ".1em",
               textTransform: "uppercase",
               fontWeight: 600,
@@ -148,8 +148,8 @@ export function Stack({ t, ac }: StackProps) {
               style={{
                 fontSize: 12,
                 color: "#3a3a48",
-                background: "#141418",
-                border: "1px solid #1e1e26",
+                background: "#0D1629",
+                border: "1px solid #1E2D4A",
                 borderRadius: 100,
                 padding: "5px 14px",
                 fontWeight: 500,
@@ -161,7 +161,7 @@ export function Stack({ t, ac }: StackProps) {
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.color = "#3a3a48";
-                (e.currentTarget as HTMLElement).style.borderColor = "#1e1e26";
+                (e.currentTarget as HTMLElement).style.borderColor = "#1E2D4A";
               }}
             >
               {tech}

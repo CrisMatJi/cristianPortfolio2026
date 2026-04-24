@@ -47,16 +47,16 @@ export function Services({ t, ac }: ServicesProps) {
               <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-.02em", marginBottom: 12 }}>
                 {s.title}
               </h3>
-              <p style={{ fontSize: 14, color: "#666", lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
+              <p style={{ fontSize: 14, color: "#4A6A8E", lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {s.tags.map((tag) => (
                   <span
                     key={tag}
                     style={{
                       fontSize: 10,
-                      color: "#444",
-                      background: "#1a1a22",
-                      border: "1px solid #252530",
+                      color: "#3A4A6A",
+                      background: "#0D1629",
+                      border: "1px solid #1E2D4A",
                       borderRadius: 100,
                       padding: "3px 10px",
                     }}

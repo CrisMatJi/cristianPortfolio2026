@@ -89,7 +89,7 @@ export function Contact({ t, ac }: ContactProps) {
             <br />
             <span style={{ color: ac }}>{t.contact.h2}</span>
           </h2>
-          <p style={{ fontSize: 15, color: "#555", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
+          <p style={{ fontSize: 15, color: "#4A6A8E", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
             {t.contact.sub}
           </p>
         </div>
@@ -101,8 +101,8 @@ export function Contact({ t, ac }: ContactProps) {
             style={{
               display: "inline-flex",
               gap: 4,
-              background: "#231d12",
-              border: "1px solid #2c2618",
+              background: "#0D1629",
+              border: "1px solid #1E2D4A",
               borderRadius: 10,
               padding: 3,
             }}
@@ -118,7 +118,7 @@ export function Contact({ t, ac }: ContactProps) {
                   borderRadius: 7,
                   transition: "all .2s",
                   background: tab === key ? ac : "transparent",
-                  color: tab === key ? "#0c0c10" : "#444",
+                  color: tab === key ? "#070B14" : "#3A4A6A",
                   border: "none",
                   cursor: "pointer",
                   whiteSpace: "nowrap",
@@ -136,8 +136,8 @@ export function Contact({ t, ac }: ContactProps) {
             style={{
               borderRadius: 16,
               overflow: "hidden",
-              border: "1px solid #2c2618",
-              background: "#231d12",
+              border: "1px solid #1E2D4A",
+              background: "#0D1629",
               animation: "fadeUp 0.5s ease both",
             }}
           >
@@ -204,7 +204,7 @@ export function Contact({ t, ac }: ContactProps) {
                   value={fields.name}
                   onChange={(e) => setFields((p) => ({ ...p, name: e.target.value }))}
                   onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "#252530")}
+                  onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
                 />
                 <input
                   required
@@ -214,7 +214,7 @@ export function Contact({ t, ac }: ContactProps) {
                   value={fields.email}
                   onChange={(e) => setFields((p) => ({ ...p, email: e.target.value }))}
                   onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "#252530")}
+                  onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
                 />
               </div>
               <textarea
@@ -226,7 +226,7 @@ export function Contact({ t, ac }: ContactProps) {
                 onChange={(e) => setFields((p) => ({ ...p, project: e.target.value }))}
                 style={{ resize: "vertical", minHeight: 120 }}
                 onFocus={(e) => (e.target.style.borderColor = ac)}
-                onBlur={(e) => (e.target.style.borderColor = "#252530")}
+                onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
               />
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
@@ -234,7 +234,7 @@ export function Contact({ t, ac }: ContactProps) {
                   disabled={status === "sending"}
                   style={{
                     background: ac,
-                    color: "#0c0c10",
+                    color: "#070B14",
                     fontWeight: 700,
                     fontSize: 14,
                     padding: "12px 28px",
@@ -271,7 +271,7 @@ export function Contact({ t, ac }: ContactProps) {
             marginTop: 24,
           }}
         >
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "#444" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "#3A4A6A" }}>
             <Dot ac={ac} />
             {t.contact.avail}
           </div>
