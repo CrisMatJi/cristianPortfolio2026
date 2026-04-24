@@ -45,8 +45,33 @@ export function Contact({ t, ac }: ContactProps) {
   const calUrl = `${CALENDLY}?embed=true&theme=dark&layout=week_view&hideEventTypeDetails=true`;
 
   return (
-    <section id="contact" style={{ padding: "100px 48px" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+    <section id="contact" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
+      {/* Giant name watermark */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: -30,
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: "clamp(72px, 12vw, 180px)",
+          fontWeight: 800,
+          letterSpacing: "-.05em",
+          whiteSpace: "nowrap",
+          lineHeight: 1,
+          background: `linear-gradient(135deg, ${ac} 0%, ${ac}80 50%, ${ac}40 100%)`,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          opacity: 0.12,
+          userSelect: "none",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
+        CRISTIAN MATEOS
+      </div>
+
+      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Header — centered */}
         <div className="reveal" style={{ textAlign: "center", marginBottom: 40 }}>
