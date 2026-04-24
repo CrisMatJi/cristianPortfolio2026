@@ -272,7 +272,7 @@ export function Contact({ t, ac }: ContactProps) {
           }}
         >
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "#3A4A6A" }}>
-            <Dot ac={ac} />
+            <Dot ac={ac} green />
             {t.contact.avail}
           </div>
         </div>

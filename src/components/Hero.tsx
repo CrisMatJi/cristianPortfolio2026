@@ -81,7 +81,7 @@ export function Hero({ t, ac }: HeroProps) {
               animation: "fadeUp .6s ease both",
             }}
           >
-            <Dot ac={ac} />
+            <Dot ac={ac} green />
             <span style={{ fontSize: 12, color: ac, fontWeight: 500, letterSpacing: ".04em" }}>
               {t.hero.avail}
             </span>

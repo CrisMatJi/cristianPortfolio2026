@@ -64,7 +64,7 @@ export function About({ t, ac }: AboutProps) {
                     padding: "7px 14px",
                   }}
                 >
-                  <Dot ac={ac} />
+                  <Dot ac={ac} green />
                   {b}
                 </span>
               ))}

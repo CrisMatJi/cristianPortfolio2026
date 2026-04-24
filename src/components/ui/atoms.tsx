@@ -2,9 +2,10 @@
 
 interface DotProps {
   ac: string;
+  green?: boolean;
 }
 
-export function Dot({ ac }: DotProps) {
+export function Dot({ ac, green }: DotProps) {
   return (
     <span
       style={{
@@ -12,7 +13,7 @@ export function Dot({ ac }: DotProps) {
         width: 7,
         height: 7,
         borderRadius: "50%",
-        background: ac,
+        background: green ? "#22C55E" : ac,
         animation: "pulse-ac 2.5s ease-in-out infinite",
         flexShrink: 0,
       }}
