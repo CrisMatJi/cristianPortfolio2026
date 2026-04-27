@@ -20,6 +20,7 @@ export function Services({ t, ac }: ServicesProps) {
               fontWeight: 800,
               letterSpacing: "-.04em",
               lineHeight: 1.06,
+              color: "var(--text)",
             }}
           >
             {t.services.h}
@@ -44,19 +45,19 @@ export function Services({ t, ac }: ServicesProps) {
                 }}
               />
               <div style={{ fontSize: 24, color: ac, marginBottom: 20 }}>{s.icon}</div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-.02em", marginBottom: 12 }}>
+              <h3 style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-.02em", marginBottom: 12, color: "var(--text)" }}>
                 {s.title}
               </h3>
-              <p style={{ fontSize: 14, color: "#4A6A8E", lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
+              <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginBottom: 24 }}>{s.desc}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {s.tags.map((tag) => (
                   <span
                     key={tag}
                     style={{
                       fontSize: 10,
-                      color: "#3A4A6A",
-                      background: "#0D1629",
-                      border: "1px solid #1E2D4A",
+                      color: "var(--text-dim)",
+                      background: "var(--bg)",
+                      border: "1px solid var(--border)",
                       borderRadius: 100,
                       padding: "3px 10px",
                     }}

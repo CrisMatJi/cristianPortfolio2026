@@ -41,7 +41,6 @@ export function Contact({ t, ac }: ContactProps) {
     }
   };
 
-  // Cal.com embed URL — week view is more compact
   const calUrl = `${CALENDLY}?embed=true&theme=dark&layout=week_view&hideEventTypeDetails=true`;
 
   return (
@@ -73,7 +72,7 @@ export function Contact({ t, ac }: ContactProps) {
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* Header — centered */}
+        {/* Header */}
         <div className="reveal" style={{ textAlign: "center", marginBottom: 40 }}>
           <SectionTag ac={ac}>{t.contact.tag}</SectionTag>
           <h2
@@ -83,26 +82,27 @@ export function Contact({ t, ac }: ContactProps) {
               letterSpacing: "-.04em",
               lineHeight: 1.06,
               marginBottom: 12,
+              color: "var(--text)",
             }}
           >
             {t.contact.h}
             <br />
             <span style={{ color: ac }}>{t.contact.h2}</span>
           </h2>
-          <p style={{ fontSize: 15, color: "#4A6A8E", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
             {t.contact.sub}
           </p>
         </div>
 
-        {/* Tab switcher — centered */}
+        {/* Tab switcher */}
         <div className="reveal d2" style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
           <div
             className="tab-switcher"
             style={{
               display: "inline-flex",
               gap: 4,
-              background: "#0D1629",
-              border: "1px solid #1E2D4A",
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
               borderRadius: 10,
               padding: 3,
             }}
@@ -118,7 +118,7 @@ export function Contact({ t, ac }: ContactProps) {
                   borderRadius: 7,
                   transition: "all .2s",
                   background: tab === key ? ac : "transparent",
-                  color: tab === key ? "#070B14" : "#3A4A6A",
+                  color: tab === key ? "var(--ac-text)" : "var(--text-dim)",
                   border: "none",
                   cursor: "pointer",
                   whiteSpace: "nowrap",
@@ -130,14 +130,14 @@ export function Contact({ t, ac }: ContactProps) {
           </div>
         </div>
 
-        {/* Calendar tab — inline iframe, compact */}
+        {/* Calendar tab */}
         {tab === "calendar" && (
           <div
             style={{
               borderRadius: 16,
               overflow: "hidden",
-              border: "1px solid #1E2D4A",
-              background: "#0D1629",
+              border: "1px solid var(--border)",
+              background: "var(--surface)",
               animation: "fadeUp 0.5s ease both",
             }}
           >
@@ -184,7 +184,7 @@ export function Contact({ t, ac }: ContactProps) {
               >
                 ✓
               </div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>{f.ok}</h3>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: "var(--text)" }}>{f.ok}</h3>
             </div>
           ) : (
             <form
@@ -204,7 +204,7 @@ export function Contact({ t, ac }: ContactProps) {
                   value={fields.name}
                   onChange={(e) => setFields((p) => ({ ...p, name: e.target.value }))}
                   onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
+                  onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
                 />
                 <input
                   required
@@ -214,7 +214,7 @@ export function Contact({ t, ac }: ContactProps) {
                   value={fields.email}
                   onChange={(e) => setFields((p) => ({ ...p, email: e.target.value }))}
                   onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
+                  onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
                 />
               </div>
               <textarea
@@ -226,7 +226,7 @@ export function Contact({ t, ac }: ContactProps) {
                 onChange={(e) => setFields((p) => ({ ...p, project: e.target.value }))}
                 style={{ resize: "vertical", minHeight: 120 }}
                 onFocus={(e) => (e.target.style.borderColor = ac)}
-                onBlur={(e) => (e.target.style.borderColor = "#1E2D4A")}
+                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
               />
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
@@ -234,7 +234,7 @@ export function Contact({ t, ac }: ContactProps) {
                   disabled={status === "sending"}
                   style={{
                     background: ac,
-                    color: "#070B14",
+                    color: "var(--ac-text)",
                     fontWeight: 700,
                     fontSize: 14,
                     padding: "12px 28px",
@@ -271,7 +271,7 @@ export function Contact({ t, ac }: ContactProps) {
             marginTop: 24,
           }}
         >
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "#3A4A6A" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--text-dim)" }}>
             <Dot ac={ac} green />
             {t.contact.avail}
           </div>
@@ -280,4 +280,3 @@ export function Contact({ t, ac }: ContactProps) {
     </section>
   );
 }
-

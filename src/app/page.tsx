@@ -15,21 +15,31 @@ import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { useReveal } from "@/hooks/useReveal";
 
+export type Theme = "light" | "dark";
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("es");
+  const [theme, setTheme] = useState<Theme>("light");
   const ac = ACCENT_DEFAULT;
   const t = T[lang];
 
   useEffect(() => {
+    const saved = (localStorage.getItem("theme") as Theme) || "light";
+    setTheme(saved);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
     document.documentElement.style.setProperty("--ac", ac);
-  }, [ac]);
+  }, [theme, ac]);
 
   useReveal();
 
   return (
     <>
       <Cursor />
-      <Nav t={t} lang={lang} setLang={setLang} ac={ac} />
+      <Nav t={t} lang={lang} setLang={setLang} ac={ac} theme={theme} setTheme={setTheme} />
       <main>
         <Hero t={t} ac={ac} />
         <About t={t} ac={ac} />

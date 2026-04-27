@@ -40,7 +40,7 @@ export function Badge({ children, ac, filled }: BadgeProps) {
         borderRadius: 100,
         whiteSpace: "nowrap",
         background: filled ? ac : `${ac}12`,
-        color: filled ? "#070B14" : ac,
+        color: filled ? "var(--ac-text)" : ac,
         border: `1px solid ${ac}30`,
       }}
     >

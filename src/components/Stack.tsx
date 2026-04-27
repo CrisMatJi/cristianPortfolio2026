@@ -11,7 +11,7 @@ interface StackProps {
 
 export function Stack({ t, ac }: StackProps) {
   return (
-    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "#0A0F1E" }}>
+    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "var(--bg-alt)" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div className="reveal" style={{ marginBottom: 64 }}>
           <SectionTag ac={ac}>{t.stack.tag}</SectionTag>
@@ -21,6 +21,7 @@ export function Stack({ t, ac }: StackProps) {
               fontWeight: 800,
               letterSpacing: "-.04em",
               lineHeight: 1.06,
+              color: "var(--text)",
             }}
           >
             {t.stack.h}
@@ -44,8 +45,8 @@ export function Stack({ t, ac }: StackProps) {
               <div
                 className={`reveal d${i + 1}`}
                 style={{
-                  background: "#0D1629",
-                  border: "1px solid #1E2D4A",
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
                   borderRadius: 16,
                   padding: "28px 22px",
                   transition: "border-color .3s",
@@ -54,10 +55,9 @@ export function Stack({ t, ac }: StackProps) {
                   (e.currentTarget.style.borderColor = `${ac}40`)
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.borderColor = "#1E2D4A")
+                  (e.currentTarget.style.borderColor = "var(--border)")
                 }
               >
-                {/* Large decorative number */}
                 <p
                   style={{
                     fontSize: 44,
@@ -76,12 +76,12 @@ export function Stack({ t, ac }: StackProps) {
                     fontWeight: 700,
                     letterSpacing: "-.02em",
                     marginBottom: 10,
-                    color: "#e2e2e8",
+                    color: "var(--text)",
                   }}
                 >
                   {step.title}
                 </h3>
-                <p style={{ fontSize: 13, color: "#4A6A8E", lineHeight: 1.65 }}>
+                <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.65 }}>
                   {step.desc}
                 </p>
               </div>
@@ -133,7 +133,7 @@ export function Stack({ t, ac }: StackProps) {
           <p
             style={{
               fontSize: 10,
-              color: "#2A3A5A",
+              color: "var(--text-dim)",
               letterSpacing: ".1em",
               textTransform: "uppercase",
               fontWeight: 600,
@@ -147,9 +147,9 @@ export function Stack({ t, ac }: StackProps) {
               key={tech}
               style={{
                 fontSize: 12,
-                color: "#3a3a48",
-                background: "#0D1629",
-                border: "1px solid #1E2D4A",
+                color: "var(--text-dim)",
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
                 borderRadius: 100,
                 padding: "5px 14px",
                 fontWeight: 500,
@@ -160,8 +160,8 @@ export function Stack({ t, ac }: StackProps) {
                 (e.currentTarget as HTMLElement).style.borderColor = `${ac}40`;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#3a3a48";
-                (e.currentTarget as HTMLElement).style.borderColor = "#1E2D4A";
+                (e.currentTarget as HTMLElement).style.color = "var(--text-dim)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
               }}
             >
               {tech}

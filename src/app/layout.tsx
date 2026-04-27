@@ -63,11 +63,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        {/* Prevents flash of wrong theme on load */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);})();`,
+          }}
+        />
       </head>
-      <body className={outfit.variable}>{children}</body>
+      <body className={outfit.variable} suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

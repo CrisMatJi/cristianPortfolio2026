@@ -10,8 +10,6 @@ const PROJECT_IMAGES = [
   { src: "/images/tupachanga-thumbnail.jpeg", alt: "tuPachangaApp — organiza partidos" },
 ];
 
-
-
 interface ProjectCardProps {
   p: Translations["projects"]["items"][number];
   cta: string;
@@ -31,10 +29,10 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
         gridTemplateColumns: "1fr 1fr",
         gap: 0,
         minHeight: 320,
-        border: `1px solid ${hov ? p.hue + "40" : "#1E2D4A"}`,
+        border: `1px solid ${hov ? p.hue + "40" : "var(--border)"}`,
         transition: "border-color .3s, transform .35s cubic-bezier(.16,1,.3,1)",
         transform: hov ? "translateY(-5px)" : "none",
-        background: "#0D1629",
+        background: "var(--surface)",
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -47,7 +45,6 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
           alt={PROJECT_IMAGES[idx].alt}
           style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", minHeight: 320, filter: "brightness(0.45) saturate(0.7)" }}
         />
-        {/* Multi-directional overlay: darkens photo + blends into card on the right */}
         <div
           style={{
             position: "absolute",
@@ -72,7 +69,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
           </span>
         </div>
         <div style={{ position: "absolute", bottom: 20, left: 20, zIndex: 1 }}>
-          <span style={{ fontSize: 11, color: "#2A3F68", letterSpacing: ".06em" }}>{p.year}</span>
+          <span style={{ fontSize: 11, color: "var(--text-dim)", letterSpacing: ".06em" }}>{p.year}</span>
         </div>
       </div>
 
@@ -86,7 +83,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
         }}
       >
         <div>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#3A4A6A", letterSpacing: ".1em", marginBottom: 10 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: "var(--text-dim)", letterSpacing: ".1em", marginBottom: 10 }}>
             {p.n}
           </p>
           <h3
@@ -96,11 +93,12 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
               letterSpacing: "-.025em",
               marginBottom: 14,
               lineHeight: 1.2,
+              color: "var(--text)",
             }}
           >
             {p.name}
           </h3>
-          <p style={{ fontSize: 13.5, color: "#4A6A8E", lineHeight: 1.72, marginBottom: 20 }}>
+          <p style={{ fontSize: 13.5, color: "var(--text-muted)", lineHeight: 1.72, marginBottom: 20 }}>
             {p.desc}
           </p>
           <div
@@ -112,7 +110,7 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
               marginBottom: 20,
             }}
           >
-            <p style={{ fontSize: 12, color: "#6B82A8", lineHeight: 1.65, fontStyle: "italic" }}>
+            <p style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.65, fontStyle: "italic" }}>
               {p.quote}
             </p>
           </div>
@@ -122,9 +120,9 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
                 key={tag}
                 style={{
                   fontSize: 10,
-                  color: "#3A4A6A",
-                  background: "#0D1629",
-                  border: "1px solid #1E2D4A",
+                  color: "var(--text-dim)",
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
                   borderRadius: 100,
                   padding: "3px 10px",
                   letterSpacing: ".04em",
@@ -165,7 +163,7 @@ interface ProjectsProps {
 
 export function Projects({ t, ac }: ProjectsProps) {
   return (
-    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "#0A0F1E" }}>
+    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "var(--bg-alt)" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div
           className="reveal"
@@ -186,6 +184,7 @@ export function Projects({ t, ac }: ProjectsProps) {
                 fontWeight: 800,
                 letterSpacing: "-.04em",
                 lineHeight: 1.06,
+                color: "var(--text)",
               }}
             >
               {t.projects.h}
@@ -193,7 +192,7 @@ export function Projects({ t, ac }: ProjectsProps) {
               <span style={{ color: ac }}>{t.projects.h2}</span>
             </h2>
           </div>
-          <p style={{ fontSize: 15, color: "#4A6A8E", maxWidth: 320, lineHeight: 1.7, paddingBottom: 8 }}>
+          <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 320, lineHeight: 1.7, paddingBottom: 8 }}>
             {t.projects.sub}
           </p>
         </div>
