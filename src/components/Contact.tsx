@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Translations } from "@/lib/translations";
 import { CALENDLY, FORMSPREE, EMAIL } from "@/lib/constants";
 import { Dot, SectionTag } from "@/components/ui/atoms";
@@ -18,11 +18,26 @@ export function Contact({ t, ac }: ContactProps) {
   const [tab, setTab] = useState<Tab>("calendar");
   const [fields, setFields] = useState({ name: "", email: "", project: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [iframeReady, setIframeReady] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handler = () => setTab("calendar");
     window.addEventListener("open-calendar-tab", handler);
     return () => window.removeEventListener("open-calendar-tab", handler);
+  }, []);
+
+  // Only load the Cal.com iframe when the section is actually visible.
+  // Prevents Cal.com's auto-focus from scrolling the page on load.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIframeReady(true); },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -44,7 +59,7 @@ export function Contact({ t, ac }: ContactProps) {
   const calUrl = `${CALENDLY}?embed=true&theme=dark&layout=week_view&hideEventTypeDetails=true`;
 
   return (
-    <section id="contact" className="resp-section" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
+    <section ref={sectionRef} id="contact" className="resp-section" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
       {/* Giant name watermark */}
       <div
         style={{
@@ -87,7 +102,7 @@ export function Contact({ t, ac }: ContactProps) {
           >
             {t.contact.h}
             <br />
-            <span style={{ color: ac }}>{t.contact.h2}</span>
+            <span style={{ color: ac, fontSize: "1.12em" }}>{t.contact.h2}</span>
           </h2>
           <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
             {t.contact.sub}
@@ -139,19 +154,29 @@ export function Contact({ t, ac }: ContactProps) {
               border: "1px solid var(--border)",
               background: "var(--surface)",
               animation: "fadeUp 0.5s ease both",
+              minHeight: 480,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <iframe
-              src={calUrl}
-              className="cal-iframe"
-              style={{
-                width: "100%",
-                height: 480,
-                border: "none",
-                display: "block",
-              }}
-              title={isEn ? "Book a call" : "Agendar llamada"}
-            />
+            {iframeReady ? (
+              <iframe
+                src={calUrl}
+                className="cal-iframe"
+                style={{
+                  width: "100%",
+                  height: 480,
+                  border: "none",
+                  display: "block",
+                }}
+                title={isEn ? "Book a call" : "Agendar llamada"}
+              />
+            ) : (
+              <div style={{ fontSize: 13, color: "var(--text-dim)" }}>
+                Cargando calendario…
+              </div>
+            )}
           </div>
         )}
 

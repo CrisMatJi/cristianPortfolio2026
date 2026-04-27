@@ -163,7 +163,7 @@ interface ProjectsProps {
 
 export function Projects({ t, ac }: ProjectsProps) {
   return (
-    <section id="work" className="resp-section" style={{ padding: "120px 48px", background: "var(--bg-alt)" }}>
+    <section id="work" className="resp-section section-alt" style={{ padding: "120px 48px" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div
           className="reveal"
@@ -189,7 +189,7 @@ export function Projects({ t, ac }: ProjectsProps) {
             >
               {t.projects.h}
               <br />
-              <span style={{ color: ac }}>{t.projects.h2}</span>
+              <span style={{ color: ac, fontSize: "1.12em" }}>{t.projects.h2}</span>
             </h2>
           </div>
           <p style={{ fontSize: 15, color: "var(--text-muted)", maxWidth: 320, lineHeight: 1.7, paddingBottom: 8 }}>

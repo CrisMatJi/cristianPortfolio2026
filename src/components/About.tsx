@@ -40,6 +40,8 @@ export function About({ t, ac }: AboutProps) {
               }}
             >
               {t.about.h}
+              <br />
+              <span style={{ color: ac, fontSize: "1.12em" }}>{t.about.h2}</span>
             </h2>
             <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.78, marginBottom: 16 }}>
               {t.about.p1}
@@ -57,12 +59,26 @@ export function About({ t, ac }: AboutProps) {
                     alignItems: "center",
                     gap: 6,
                     fontSize: 12,
-                    fontWeight: 500,
+                    fontWeight: 600,
                     color: "var(--text-muted)",
                     background: "var(--surface)",
                     border: "1px solid var(--border)",
                     borderRadius: 100,
-                    padding: "7px 14px",
+                    padding: "9px 16px",
+                    transition: "all .2s",
+                    cursor: "default",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = ac;
+                    e.currentTarget.style.borderColor = ac;
+                    e.currentTarget.style.background = `${ac}08`;
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--text-muted)";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                    e.currentTarget.style.background = "var(--surface)";
+                    e.currentTarget.style.transform = "none";
                   }}
                 >
                   <Dot ac={ac} green />

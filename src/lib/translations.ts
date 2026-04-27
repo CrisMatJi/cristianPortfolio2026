@@ -22,6 +22,7 @@ export interface Translations {
   about: {
     tag: string;
     h: string;
+    h2: string;
     p1: string;
     p2: string;
     cards: { label: string; val: string }[];
@@ -121,7 +122,8 @@ const T: Record<Lang, Translations> = {
     },
     about: {
       tag: "Sobre mí",
-      h: "Código que resuelve. Developer que responde.",
+      h: "Código que resuelve.",
+      h2: "Developer que responde.",
       p1: "Empecé en sistemas internos, aprendí que el software que falla cuesta dinero real. Hoy combino mi trabajo como desarrollador con proyectos freelance seleccionados — solo los que puedo hacer bien.",
       p2: "Me comprometo con el resultado, no con el presupuesto. Comunico directamente, sin intermediarios ni comerciales.",
       cards: [
@@ -348,7 +350,8 @@ const T: Record<Lang, Translations> = {
     },
     about: {
       tag: "About me",
-      h: "Code that delivers. Developer who responds.",
+      h: "Code that delivers.",
+      h2: "Developer who responds.",
       p1: "I started in internal systems, learned that failing software costs real money. Today I combine my developer job with selected freelance projects — only the ones I can do well.",
       p2: "I commit to the outcome, not the budget. I communicate directly, no middlemen or account managers.",
       cards: [

@@ -11,7 +11,7 @@ interface StackProps {
 
 export function Stack({ t, ac }: StackProps) {
   return (
-    <section id="stack" className="resp-section" style={{ padding: "120px 48px", background: "var(--bg-alt)" }}>
+    <section id="stack" className="resp-section section-alt" style={{ padding: "120px 48px" }}>
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <div className="reveal" style={{ marginBottom: 64 }}>
           <SectionTag ac={ac}>{t.stack.tag}</SectionTag>
@@ -26,7 +26,7 @@ export function Stack({ t, ac }: StackProps) {
           >
             {t.stack.h}
             <br />
-            <span style={{ color: ac }}>{t.stack.h2}</span>
+            <span style={{ color: ac, fontSize: "1.12em" }}>{t.stack.h2}</span>
           </h2>
         </div>
 

@@ -104,7 +104,7 @@ export function Hero({ t, ac }: HeroProps) {
           >
             {t.hero.h1}
             <br />
-            <span style={{ color: ac }}>{t.hero.h1Accent}</span>
+            <span style={{ color: ac, fontSize: "1.12em" }}>{t.hero.h1Accent}</span>
           </h1>
 
           <p

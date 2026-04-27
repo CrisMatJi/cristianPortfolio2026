@@ -4,10 +4,10 @@
 
 /* ── Theme tokens ────────────────────────────────── */
 :root {
-  --bg: #F8F7F4;
-  --bg-alt: #EFEDE8;
-  --surface: #FFFFFF;
-  --border: #E2DDD6;
+  --bg: #E8E5DF;
+  --bg-alt: #E0DDD6;
+  --surface: #EDE9E3;
+  --border: #D4CFC6;
   --text: #1A1A2E;
   --text-muted: #637087;
   --text-dim: #A0AAB8;
@@ -18,6 +18,9 @@
   --strip-border: #E2DDD6;
   --ac: #1D4ED8;
   --ac-text: #FFFFFF;
+  --dot-color: rgba(29, 78, 216, 0.13);
+  --dot-size: 1.5px;
+  --dot-space: 28px;
 }
 
 [data-theme="dark"] {
@@ -34,6 +37,9 @@
   --strip-bg: #080E1B;
   --strip-border: #0F1A2E;
   --ac-text: #FFFFFF;
+  --dot-color: rgba(29, 78, 216, 0.18);
+  --dot-size: 1.5px;
+  --dot-space: 28px;
 }
 
 *, *::before, *::after {
@@ -47,13 +53,22 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dot-color) var(--dot-size), transparent var(--dot-size));
+  background-size: var(--dot-space) var(--dot-space);
   color: var(--text);
   font-family: 'Outfit', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   cursor: none;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Secciones alternadas: mismo dot grid sobre bg-alt */
+.section-alt {
+  background-color: var(--bg-alt);
+  background-image: radial-gradient(var(--dot-color) var(--dot-size), transparent var(--dot-size));
+  background-size: var(--dot-space) var(--dot-space);
 }
 
 a, button { cursor: none; }
