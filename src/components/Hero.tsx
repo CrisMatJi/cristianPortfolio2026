@@ -222,7 +222,7 @@ export function Hero({ t, ac }: HeroProps) {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/cristian.jpg"
+              src="/images/cristian.png"
               alt="Cristian Mateos"
               style={{
                 position: "absolute",
