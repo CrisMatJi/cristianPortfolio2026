@@ -123,7 +123,7 @@ const T = {
       items:[
         { n:'01', name:'ACF Fernando Terremoto', cat:'Full-Stack · Reservas · Dashboard', year:'2024', desc:'Sistema completo de reserva de asientos para espectáculos flamencos. Web pública con motor de reservas en tiempo real y dashboard de administración con control de aforo.', quote:'"Pasamos de gestionar reservas en papel a tener todo automatizado. La web se paga sola."', url:'https://www.acffernandoterremoto.es', tags:['Next.js','Node.js','PostgreSQL','Dashboard admin'], hue:'#e74c3c' },
         { n:'02', name:'Suárez Studio', cat:'Landing Page · Portfolio · Diseño', year:'2024', desc:'Landing page minimalista para estudio de diseño de interiorismo arquitectónico. Enfocada en transmitir lujo, captar nuevos clientes de alto valor y mostrar proyectos de forma visual.', quote:'"Clientes me dicen que encuentran mi web más profesional que la de estudios grandes."', url:'https://www.suarezstudio.es', tags:['Next.js','Framer Motion','CRO','SEO'], hue:'#d4a547' },
-        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Aplicación Android para organizar partidos de fútbol amateur. Gestión de jugadores, algoritmo de equilibrio automático de equipos y notificaciones push en tiempo real.', quote:'"Empezamos a usarla en el grupo y ya no queremos volver a los grupos de WhatsApp."', url:'https://play.google.com/store', tags:['React Native','Android','Algoritmos','Push Notifications'], hue:'#27ae60' },
+        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Aplicación Android para organizar partidos de fútbol amateur. Gestión de jugadores, algoritmo de equilibrio automático de equipos y notificaciones push en tiempo real.', quote:'"Empezamos a usarla en el grupo y ya no queremos volver a los grupos de WhatsApp."', url:'https://play.google.com/store', tags:['React Native','Android','Algoritmos','Push Notifications'], hue:'#27ae60', hideCta:true },
       ],
     },
     stack:{
@@ -195,7 +195,7 @@ const T = {
       items:[
         { n:'01', name:'ACF Fernando Terremoto', cat:'Full-Stack · Booking · Dashboard', year:'2024', desc:'Complete seat reservation system for flamenco shows. Public website with real-time booking engine and administration dashboard with capacity control.', quote:'"We went from paper reservations to everything automated. The website pays for itself."', url:'https://www.acffernandoterremoto.es', tags:['Next.js','Node.js','PostgreSQL','Admin dashboard'], hue:'#e74c3c' },
         { n:'02', name:'Suárez Studio', cat:'Landing Page · Portfolio · Design', year:'2024', desc:'Minimalist landing page for an architectural interior design studio. Focused on conveying luxury, attracting high-value clients and showcasing projects visually.', quote:'"Clients tell me my website looks more professional than large studios."', url:'https://www.suarezstudio.es', tags:['Next.js','Framer Motion','CRO','SEO'], hue:'#d4a547' },
-        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Android app to organize amateur football matches. Player management, automatic team balancing algorithm, and real-time push notifications.', quote:'"We started using it in the group and now we never want to go back to WhatsApp groups."', url:'https://play.google.com/store', tags:['React Native','Android','Algorithms','Push Notifications'], hue:'#27ae60' },
+        { n:'03', name:'tuPachangaApp', cat:'Mobile · Android · Play Store', year:'2023', desc:'Android app to organize amateur football matches. Player management, automatic team balancing algorithm, and real-time push notifications.', quote:'"We started using it in the group and now we never want to go back to WhatsApp groups."', url:'https://play.google.com/store', tags:['React Native','Android','Algorithms','Push Notifications'], hue:'#27ae60', hideCta:true },
       ],
     },
     stack:{
@@ -519,10 +519,12 @@ function ProjectCard({ p, cta, ac, idx }) {
             {p.tags.map(tag=><span key={tag} style={{ fontSize:10,color:'#444',background:'#1a1a22',border:'1px solid #252530',borderRadius:100,padding:'3px 10px',letterSpacing:'.04em' }}>{tag}</span>)}
           </div>
         </div>
-        <a href={p.url} target="_blank" style={{ display:'inline-flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:ac,transition:'gap .2s' }}
-          onMouseEnter={e=>e.currentTarget.style.gap='12px'} onMouseLeave={e=>e.currentTarget.style.gap='8px'}>
-          {cta}
-        </a>
+        {!p.hideCta && (
+          <a href={p.url} target="_blank" style={{ display:'inline-flex',alignItems:'center',gap:8,fontSize:13,fontWeight:700,color:ac,transition:'gap .2s' }}
+            onMouseEnter={e=>e.currentTarget.style.gap='12px'} onMouseLeave={e=>e.currentTarget.style.gap='8px'}>
+            {cta}
+          </a>
+        )}
       </div>
     </div>
   );
