@@ -45,6 +45,7 @@ export interface Translations {
       url: string;
       tags: string[];
       hue: string;
+      hideCta?: boolean;
     }[];
   };
   services: {
@@ -189,6 +190,7 @@ const T: Record<Lang, Translations> = {
             "Push Notifications",
           ],
           hue: "#27ae60",
+          hideCta: true,
         },
       ],
     },
@@ -413,6 +415,7 @@ const T: Record<Lang, Translations> = {
             "Push Notifications",
           ],
           hue: "#27ae60",
+          hideCta: true,
         },
       ],
     },

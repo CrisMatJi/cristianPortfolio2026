@@ -133,24 +133,26 @@ function ProjectCard({ p, cta, ac, idx }: ProjectCardProps) {
             ))}
           </div>
         </div>
-        <a
-          href={p.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            fontSize: 13,
-            fontWeight: 700,
-            color: ac,
-            transition: "gap .2s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.gap = "12px")}
-          onMouseLeave={(e) => (e.currentTarget.style.gap = "8px")}
-        >
-          {cta}
-        </a>
+        {!p.hideCta && (
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              color: ac,
+              transition: "gap .2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.gap = "12px")}
+            onMouseLeave={(e) => (e.currentTarget.style.gap = "8px")}
+          >
+            {cta}
+          </a>
+        )}
       </div>
     </div>
   );
