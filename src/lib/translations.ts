@@ -105,6 +105,8 @@ export interface Translations {
     skip: string;
     main: string;
     whatsapp: string;
+    whatsappBubble: string;
+    whatsappBubbleClose: string;
     scrollHint: string;
   };
 }
@@ -358,6 +360,8 @@ const T: Record<Lang, Translations> = {
       skip: "Saltar al contenido",
       main: "Contenido principal",
       whatsapp: "Escríbeme por WhatsApp",
+      whatsappBubble: "¿Tienes un proyecto en mente? Hablemos por WhatsApp 👋",
+      whatsappBubbleClose: "Cerrar mensaje",
       scrollHint: "Desplázate para ver más",
     },
   },
@@ -603,6 +607,8 @@ const T: Record<Lang, Translations> = {
       skip: "Skip to content",
       main: "Main content",
       whatsapp: "Message me on WhatsApp",
+      whatsappBubble: "Got a project in mind? Let's talk on WhatsApp 👋",
+      whatsappBubbleClose: "Close message",
       scrollHint: "Scroll for more",
     },
   },

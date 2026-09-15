@@ -801,7 +801,10 @@ img {
   flex: 0 1 320px;
   width: 320px;
   max-width: 100%;
-  height: 280px;
+  /* 3:2 keeps the crop close to each project photo's native aspect ratio
+     (avoids over-cropping wider shots — see ACF thumbnail) while staying
+     responsive instead of a fixed height. */
+  aspect-ratio: 3 / 2;
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
@@ -1281,10 +1284,21 @@ textarea.inp {
   color: var(--ac);
 }
 
-.fab-wa {
+/* Wrapper anchors the button+bubble pair together and is the single thing
+   that moves — via --fab-lift — to stay clear of the footer on scroll. */
+.fab-wa-wrap {
   position: fixed;
   right: 24px;
   bottom: 24px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transform: translateY(var(--fab-lift, 0px));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fab-wa {
+  flex-shrink: 0;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -1293,7 +1307,6 @@ textarea.inp {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
-  z-index: 40;
   transition:
     transform 0.2s,
     box-shadow 0.2s;
@@ -1301,6 +1314,70 @@ textarea.inp {
 .fab-wa:hover {
   transform: scale(1.07);
   box-shadow: 0 10px 30px rgba(37, 211, 102, 0.55);
+}
+
+.fab-bubble {
+  position: relative;
+  max-width: 220px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  padding: 12px 26px 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  box-shadow: 0 14px 32px -10px rgba(28, 28, 27, 0.35);
+  animation: bubbleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fab-bubble::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--paper);
+  border-right: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+}
+/* Desktop: bubble sits to the left of the button, arrow points right. */
+.fab-bubble::after {
+  top: 50%;
+  right: -6.5px;
+  transform: translateY(-50%) rotate(-45deg);
+}
+.fab-bubble__close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-55);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.fab-bubble__close:hover {
+  background: rgba(28, 28, 27, 0.08);
+  color: var(--ink);
+}
+
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-bubble {
+    animation: none;
+  }
 }
 
 .sr-only {
@@ -1389,7 +1466,7 @@ textarea.inp {
     display: none;
   }
 
-  .fab-wa {
+  .fab-wa-wrap {
     right: 16px;
     bottom: 16px;
   }
@@ -1415,7 +1492,7 @@ textarea.inp {
   .project__media {
     flex: 1 1 100%;
     width: 100%;
-    height: 220px;
+    aspect-ratio: 3 / 2;
   }
   .form__row {
     grid-template-columns: 1fr;
@@ -1433,5 +1510,35 @@ textarea.inp {
   }
   .about__cards {
     grid-template-columns: 1fr 1fr;
+  }
+
+  /* Bubble to the left doesn't fit on a narrow screen — stack it above the
+     button instead, arrow flipped to point down. */
+  .fab-wa-wrap {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .fab-bubble {
+    max-width: min(220px, 62vw);
+  }
+  .fab-bubble::after {
+    top: 100%;
+    right: 20px;
+    transform: rotate(45deg);
+  }
+  .fab-bubble {
+    animation-name: bubbleInUp;
+  }
+}
+
+@keyframes bubbleInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

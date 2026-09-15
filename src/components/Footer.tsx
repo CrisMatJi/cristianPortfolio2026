@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Translations } from "@/lib/translations";
 import { EMAIL, LINKEDIN, WHATSAPP } from "@/lib/constants";
 
@@ -29,11 +30,70 @@ function WhatsAppIcon() {
     </svg>
   );
 }
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+      <path d="M4 4l10 10M14 4L4 14" />
+    </svg>
+  );
+}
+
+/** Extra breathing room kept between the FAB and the footer while "docked". */
+const FOOTER_GAP = 16;
+/** How long the bubble waits before it first appears, and how long it stays. */
+const BUBBLE_SHOW_DELAY = 2200;
+const BUBBLE_AUTO_HIDE = 9000;
 
 export function Footer({ t }: FooterProps) {
+  const footerRef = useRef<HTMLElement>(null);
+  const [lift, setLift] = useState(0);
+  const [bubbleOpen, setBubbleOpen] = useState(false);
+
+  // Keep the floating WhatsApp button from ever overlapping the footer: as
+  // the footer's top edge approaches the viewport bottom, push the button
+  // (and its bubble) up by exactly that amount. Scrolling can't go further
+  // than "footer bottom == viewport bottom", so this is naturally clamped —
+  // no magic max-height needed.
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const el = footerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const overlap = window.innerHeight - rect.top + FOOTER_GAP;
+      setLift(Math.max(0, overlap));
+    };
+    const onScrollOrResize = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Show the invitation bubble once, a couple of seconds after load, then
+  // auto-hide it. Never shown again this session once dismissed (by the
+  // close button, by clicking through to WhatsApp, or by timing out).
+  useEffect(() => {
+    const showTimer = setTimeout(() => setBubbleOpen(true), BUBBLE_SHOW_DELAY);
+    return () => clearTimeout(showTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!bubbleOpen) return;
+    const hideTimer = setTimeout(() => setBubbleOpen(false), BUBBLE_AUTO_HIDE);
+    return () => clearTimeout(hideTimer);
+  }, [bubbleOpen]);
+
   return (
     <>
-      <footer className="footer">
+      <footer className="footer" ref={footerRef}>
         <span>{t.footer.copy}</span>
         <div className="footer__links">
           <a
@@ -52,15 +112,35 @@ export function Footer({ t }: FooterProps) {
         </div>
       </footer>
 
-      <a
-        href={WHATSAPP}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fab-wa"
-        aria-label={t.a11y.whatsapp}
+      <div
+        className="fab-wa-wrap"
+        style={{ "--fab-lift": `-${lift}px` } as CSSProperties}
       >
-        <WhatsAppIcon />
-      </a>
+        {bubbleOpen && (
+          <div className="fab-bubble" role="status">
+            <button
+              type="button"
+              className="fab-bubble__close"
+              aria-label={t.a11y.whatsappBubbleClose}
+              onClick={() => setBubbleOpen(false)}
+            >
+              <CloseIcon />
+            </button>
+            <p>{t.a11y.whatsappBubble}</p>
+          </div>
+        )}
+
+        <a
+          href={WHATSAPP}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fab-wa"
+          aria-label={t.a11y.whatsapp}
+          onClick={() => setBubbleOpen(false)}
+        >
+          <WhatsAppIcon />
+        </a>
+      </div>
     </>
   );
 }
