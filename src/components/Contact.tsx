@@ -1,23 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Translations } from "@/lib/translations";
-import { CALENDLY, FORMSPREE, EMAIL } from "@/lib/constants";
-import { Dot, SectionTag } from "@/components/ui/atoms";
+import { CAL_EMBED, EMAIL, FORMSPREE } from "@/lib/constants";
 
 interface ContactProps {
   t: Translations;
-  ac: string;
 }
 
 type Tab = "calendar" | "form";
 
-export function Contact({ t, ac }: ContactProps) {
+export function Contact({ t }: ContactProps) {
   const f = t.contact.form;
-  const isEn = t.contact.tag === "Contact";
   const [tab, setTab] = useState<Tab>("calendar");
   const [fields, setFields] = useState({ name: "", email: "", project: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [iframeReady, setIframeReady] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -27,13 +24,15 @@ export function Contact({ t, ac }: ContactProps) {
     return () => window.removeEventListener("open-calendar-tab", handler);
   }, []);
 
-  // Only load the Cal.com iframe when the section is actually visible.
-  // Prevents Cal.com's auto-focus from scrolling the page on load.
+  // Only load the Cal.com iframe once the section is actually visible —
+  // avoids Cal.com's auto-focus scrolling the page on initial load.
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIframeReady(true); },
+      ([entry]) => {
+        if (entry.isIntersecting) setIframeReady(true);
+      },
       { threshold: 0.1 }
     );
     observer.observe(el);
@@ -47,259 +46,169 @@ export function Contact({ t, ac }: ContactProps) {
       const res = await fetch(FORMSPREE, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name: fields.name, email: fields.email, message: fields.project }),
+        body: JSON.stringify({
+          name: fields.name,
+          email: fields.email,
+          message: fields.project,
+        }),
       });
-      setStatus(res.ok ? "sent" : "sent");
+      setStatus(res.ok ? "sent" : "error");
     } catch {
-      window.location.href = `mailto:${EMAIL}?subject=Proyecto de ${encodeURIComponent(fields.name)}&body=${encodeURIComponent(fields.project)}`;
-      setStatus("sent");
+      setStatus("error");
     }
   };
 
-  const calUrl = `${CALENDLY}?embed=true&theme=dark&layout=week_view&hideEventTypeDetails=true`;
-
   return (
-    <section ref={sectionRef} id="contact" className="resp-section" style={{ padding: "100px 48px 180px", position: "relative", overflow: "hidden" }}>
-      {/* Giant name watermark */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: -30,
-          left: "50%",
-          transform: "translateX(-50%)",
-          fontSize: "clamp(72px, 12vw, 180px)",
-          fontWeight: 800,
-          letterSpacing: "-.05em",
-          whiteSpace: "nowrap",
-          lineHeight: 1,
-          background: `linear-gradient(135deg, ${ac} 0%, ${ac}80 50%, ${ac}40 100%)`,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          opacity: 0.12,
-          userSelect: "none",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      >
-        CRISTIAN MATEOS
+    <section id="contact" className="section section--alt" ref={sectionRef}>
+      <span className="section__ghost" aria-hidden="true">
+        06
+      </span>
+      <div className="eyebrow">
+        <span>06</span>
+        <span className="eyebrow__tag">{t.contact.tag}</span>
       </div>
 
-      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
-
-        {/* Header */}
-        <div className="reveal" style={{ textAlign: "center", marginBottom: 40 }}>
-          <SectionTag ac={ac}>{t.contact.tag}</SectionTag>
-          <h2
-            style={{
-              fontSize: "clamp(32px,4.5vw,52px)",
-              fontWeight: 800,
-              letterSpacing: "-.04em",
-              lineHeight: 1.06,
-              marginBottom: 12,
-              color: "var(--text)",
-            }}
-          >
+      <div className="contact__grid">
+        <div className="contact__intro reveal">
+          <h2 className="contact__h">
             {t.contact.h}
             <br />
-            <span style={{ color: ac, fontSize: "1.12em" }}>{t.contact.h2}</span>
+            {t.contact.h2}
           </h2>
-          <p style={{ fontSize: 15, color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto" }}>
-            {t.contact.sub}
-          </p>
-        </div>
-
-        {/* Tab switcher */}
-        <div className="reveal d2" style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
-          <div
-            className="tab-switcher"
-            style={{
-              display: "inline-flex",
-              gap: 4,
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              borderRadius: 10,
-              padding: 3,
-            }}
-          >
-            {(["calendar", "form"] as Tab[]).map((key) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  padding: "8px 20px",
-                  borderRadius: 7,
-                  transition: "all .2s",
-                  background: tab === key ? ac : "transparent",
-                  color: tab === key ? "var(--ac-text)" : "var(--text-dim)",
-                  border: "none",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {key === "calendar" ? t.contact.tabCal : t.contact.tabForm}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Calendar tab */}
-        {tab === "calendar" && (
-          <div
-            style={{
-              borderRadius: 16,
-              overflow: "hidden",
-              border: "1px solid var(--border)",
-              background: "var(--surface)",
-              animation: "fadeUp 0.5s ease both",
-              minHeight: 480,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {iframeReady ? (
-              <iframe
-                src={calUrl}
-                className="cal-iframe"
-                style={{
-                  width: "100%",
-                  height: 480,
-                  border: "none",
-                  display: "block",
-                }}
-                title={isEn ? "Book a call" : "Agendar llamada"}
-              />
-            ) : (
-              <div style={{ fontSize: 13, color: "var(--text-dim)" }}>
-                Cargando calendario…
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Form tab */}
-        {tab === "form" &&
-          (status === "sent" ? (
-            <div
-              className="card"
-              style={{
-                borderRadius: 20,
-                padding: "48px 36px",
-                textAlign: "center",
-                animation: "fadeUp 0.5s ease both",
-              }}
-            >
-              <div
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: "50%",
-                  background: `${ac}15`,
-                  border: `1px solid ${ac}30`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 18px",
-                  fontSize: 20,
-                  color: ac,
-                }}
-              >
-                ✓
-              </div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: "var(--text)" }}>{f.ok}</h3>
-            </div>
-          ) : (
-            <form
-              onSubmit={submit}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 12,
-                animation: "fadeUp 0.5s ease both",
-              }}
-            >
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <input
-                  required
-                  className="inp"
-                  placeholder={f.name}
-                  value={fields.name}
-                  onChange={(e) => setFields((p) => ({ ...p, name: e.target.value }))}
-                  onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-                />
-                <input
-                  required
-                  type="email"
-                  className="inp"
-                  placeholder={f.email}
-                  value={fields.email}
-                  onChange={(e) => setFields((p) => ({ ...p, email: e.target.value }))}
-                  onFocus={(e) => (e.target.style.borderColor = ac)}
-                  onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-                />
-              </div>
-              <textarea
-                required
-                rows={5}
-                className="inp"
-                placeholder={f.project}
-                value={fields.project}
-                onChange={(e) => setFields((p) => ({ ...p, project: e.target.value }))}
-                style={{ resize: "vertical", minHeight: 120 }}
-                onFocus={(e) => (e.target.style.borderColor = ac)}
-                onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-              />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  style={{
-                    background: ac,
-                    color: "var(--ac-text)",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    padding: "12px 28px",
-                    borderRadius: 100,
-                    transition: "transform .25s, box-shadow .25s, opacity .2s",
-                    boxShadow: `0 0 20px ${ac}20`,
-                    opacity: status === "sending" ? 0.6 : 1,
-                    cursor: "pointer",
-                    border: "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (status !== "sending") {
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                      e.currentTarget.style.boxShadow = `0 6px 30px ${ac}40`;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "none";
-                    e.currentTarget.style.boxShadow = `0 0 20px ${ac}20`;
-                  }}
-                >
-                  {status === "sending" ? "..." : f.send}
-                </button>
-              </div>
-            </form>
-          ))}
-
-        {/* Availability badge */}
-        <div
-          className="reveal d3"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 24,
-          }}
-        >
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--text-dim)" }}>
-            <Dot ac={ac} green />
+          <p className="contact__sub">{t.contact.sub}</p>
+          <div className="contact__avail">
+            <span aria-hidden="true" />
             {t.contact.avail}
           </div>
+        </div>
+
+        <div className="contact__panel reveal d2">
+          <div className="tabs" role="tablist" aria-label={t.contact.tag}>
+            <button
+              type="button"
+              role="tab"
+              id="tab-calendar"
+              aria-selected={tab === "calendar"}
+              aria-controls="panel-calendar"
+              className="tab"
+              onClick={() => setTab("calendar")}
+            >
+              {t.contact.tabCal}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-form"
+              aria-selected={tab === "form"}
+              aria-controls="panel-form"
+              className="tab"
+              onClick={() => setTab("form")}
+            >
+              {t.contact.tabForm}
+            </button>
+          </div>
+
+          {tab === "calendar" && (
+            <div
+              id="panel-calendar"
+              role="tabpanel"
+              aria-labelledby="tab-calendar"
+              className="cal-frame"
+            >
+              {iframeReady ? (
+                <iframe
+                  src={CAL_EMBED}
+                  title={t.contact.calTitle}
+                  loading="lazy"
+                />
+              ) : (
+                <p style={{ fontSize: 13, color: "var(--ink-45)" }}>
+                  {t.contact.calLoading}
+                </p>
+              )}
+            </div>
+          )}
+
+          {tab === "form" && (
+            <div id="panel-form" role="tabpanel" aria-labelledby="tab-form">
+              {status === "sent" ? (
+                <div className="form__ok fade-up">
+                  <div className="form__ok-mark" aria-hidden="true">
+                    ✓
+                  </div>
+                  <p className="form__ok-text">{f.ok}</p>
+                </div>
+              ) : (
+                <form className="form fade-up" onSubmit={submit} noValidate>
+                  <div className="form__row">
+                    <div>
+                      <label className="sr-only" htmlFor="name">
+                        {f.name}
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        required
+                        className="inp"
+                        placeholder={f.name}
+                        autoComplete="name"
+                        value={fields.name}
+                        onChange={(e) =>
+                          setFields((p) => ({ ...p, name: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="sr-only" htmlFor="email">
+                        {f.email}
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        required
+                        type="email"
+                        className="inp"
+                        placeholder={f.email}
+                        autoComplete="email"
+                        value={fields.email}
+                        onChange={(e) =>
+                          setFields((p) => ({ ...p, email: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <label className="sr-only" htmlFor="project">
+                    {f.project}
+                  </label>
+                  <textarea
+                    id="project"
+                    name="project"
+                    required
+                    rows={5}
+                    className="inp"
+                    placeholder={f.project}
+                    value={fields.project}
+                    onChange={(e) =>
+                      setFields((p) => ({ ...p, project: e.target.value }))
+                    }
+                  />
+                  {status === "error" && (
+                    <p className="form__error" role="alert">
+                      {f.error}{" "}
+                      <a href={`mailto:${EMAIL}`} style={{ color: "inherit", textDecoration: "underline" }}>
+                        {EMAIL}
+                      </a>
+                    </p>
+                  )}
+                  <div className="form__submit">
+                    <button type="submit" disabled={status === "sending"} className="btn-submit">
+                      {status === "sending" ? f.sending : f.send}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

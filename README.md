@@ -1,25 +1,49 @@
-# CODING AGENTS: READ THIS FIRST
+# Cristian Mateos — Portfolio
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Personal freelance portfolio for Cristian Mateos, full-stack developer. Built
+with Next.js (static export) and deployed to GitHub Pages.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+**Live site:** https://cristianmateos.es
 
-## What you should do — IMPORTANT
+## Stack
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+- [Next.js 15](https://nextjs.org/) (App Router, static export via `output: "export"`)
+- React 19 + TypeScript
+- Tailwind CSS (base reset only — layout/visuals live in `src/app/globals.css`)
+- `next/font` — self-hosted Bricolage Grotesque (display) + IBM Plex Sans (body)
+- [Cal.com](https://cal.com) embed + [Formspree](https://formspree.io) for the contact section
 
-**Read `project/Portfolio CM - Estilo Bluren.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+## Structure
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+```
+src/
+  app/            # App Router entry: layout (SEO/metadata), page, global styles
+  components/      # One component per section (Sidebar, Hero, Services, Projects,
+                    Stack, About, Contact, Footer)
+  hooks/          # useReveal (scroll-reveal), useScrollSpy (sidebar active link)
+  lib/
+    constants.ts     # Site-wide constants (Calendly, Formspree, contact links)
+    translations.ts  # ES/EN copy — single source of truth, typed via Translations
+```
 
-## About the design files
+The site is fully bilingual (ES/EN) via a client-side language switcher in the
+sidebar — no localized routing, all copy lives in `src/lib/translations.ts`.
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Development
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # static export → ./out
+```
 
-## Bundle contents
+## Deployment
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Cristian Portfolio` project files (HTML prototypes, assets, components)
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the
+static export and publishes it to GitHub Pages.
+
+## Design source
+
+The visual design was mocked up in Claude Design and implemented here
+following its component structure (persistent sidebar nav with scroll-spy,
+editorial paper/ink palette, deep blue accent).
