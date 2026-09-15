@@ -225,10 +225,10 @@ const T: Record<Lang, Translations> = {
           url: "https://www.acffernandoterremoto.es",
           tags: ["Next.js", "Node.js", "PostgreSQL", "Dashboard admin"],
           img: "/images/acf-thumbnail.jpg",
-          imgW: 952,
-          imgH: 536,
+          imgW: 864,
+          imgH: 446,
           imgAlt:
-            "Web de reservas de entradas de la peña flamenca ACF Fernando Terremoto",
+            "Cantaor flamenco actuando en un espectáculo de ACF Fernando Terremoto",
           showCta: true,
         },
         {
@@ -479,9 +479,9 @@ const T: Record<Lang, Translations> = {
           url: "https://www.acffernandoterremoto.es",
           tags: ["Next.js", "Node.js", "PostgreSQL", "Admin dashboard"],
           img: "/images/acf-thumbnail.jpg",
-          imgW: 952,
-          imgH: 536,
-          imgAlt: "ACF Fernando Terremoto flamenco show booking website",
+          imgW: 864,
+          imgH: 446,
+          imgAlt: "Flamenco singer performing at an ACF Fernando Terremoto show",
           showCta: true,
         },
         {
