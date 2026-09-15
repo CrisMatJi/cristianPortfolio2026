@@ -1,5 +1,9 @@
 import { ImageResponse } from "next/og";
 
+// Required by `output: "export"` — this route has no dynamic params, so it
+// can (and must) be emitted as a static file at build time.
+export const dynamic = "force-static";
+
 export const size = {
   width: 32,
   height: 32,
